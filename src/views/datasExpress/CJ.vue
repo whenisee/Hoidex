@@ -1,0 +1,83 @@
+<template>
+  <div class="cj">
+    <div class="title">{{$t('dash.recentTrades')}}</div>
+    <section>
+      <div class="attribute">
+        <p>{{$t('dash.price')}}(BTC)</p>
+        <p>{{$t('dash.volume')}}(DASH)</p>
+        <p>{{$t('dash.time')}}</p>
+      </div>
+      <div class="content">
+        <div class="item" v-for="(item, index) of $store.state.marketDepth" :key="index">
+          <p :style="{color: item.direction=='buy'?'green':'red'}">{{item.price}}</p>
+          <p>{{item.amount | handleDecimal(4)}}</p>
+          <p>{{item.ts}}</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      datas: []
+    };
+  },
+  methods: {},
+  mounted() {}
+};
+</script>
+
+<style lang="less" scoped>
+.cj {
+  background: rgb(29, 38, 53);
+  padding-bottom: 80px;
+  font-size: 27px;
+  .title {
+    padding: 30px;
+    box-sizing: border-box;
+    background: rgb(38, 48, 67);
+  }
+  section {
+    font-size: 25px;
+    padding: 20px;
+    .attribute {
+      display: flex;
+      p {
+        padding: 10px 0;
+        display: flex;
+        justify-content: flex-end;
+        &:nth-child(1) {
+          display: flex;
+          justify-content: flex-start;
+        }
+      }
+    }
+    p {
+      flex: 1;
+      color: rgb(130, 142, 161);
+    }
+    .content {
+      padding: 20px 0;
+      &::-webkit-scrollbar {
+        display: none; //取消滚动轴
+      }
+      .item {
+        display: flex;
+        p {
+          padding: 10px 0;
+          display: flex;
+          justify-content: flex-end;
+          &:nth-child(1) {
+            display: flex;
+            justify-content: flex-start;
+            color: red;
+          }
+        }
+      }
+    }
+  }
+}
+</style>

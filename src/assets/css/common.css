@@ -1,0 +1,64 @@
+.flex {
+    display: flex;
+}
+
+.flex-between {
+    justify-content: space-between;
+}
+
+.flex-end {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.padding {
+    padding: 10px;
+}
+
+.padding-tb {
+    margin: 30px 0;
+}
+
+.padding-lr {
+    padding: 0 30px;
+}
+
+.bg-gray {
+    background: rgb(29, 38, 52);
+}
+
+.f-red {
+    color: red;
+}
+
+.f-green {
+    color: green;
+}
+
+.f-gray {
+    color: rgb(130, 142, 161);
+}
+
+.f-26 {
+    font-size: 26px;
+}
+
+.border {
+    border: 1px solid rgb(41, 52, 72);
+    padding: 30px;
+}
+
+.border-s {
+    padding: 5px;
+    border: 1px solid rgb(41, 52, 72);
+}
+
+.margin-b {
+    margin-bottom: 20px;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
