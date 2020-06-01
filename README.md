@@ -1,7 +1,5 @@
 ## 一、启动项目
 
-> 此项目是为打包准备的，打包后运行不会报错。
-
 ```
 npm install
 npm run serve

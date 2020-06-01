@@ -2,7 +2,7 @@ module.exports = {
     chainWebpack: config => {
         config.when(process.env.NODE_ENV === 'production', config => {
             config.set('externals', {
-                'vue': 'vue',
+                vue: 'Vue',
                 'vue-router': 'vue-router',
                 axios: 'axios',
                 echarts: 'echarts',
