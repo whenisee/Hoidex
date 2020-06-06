@@ -52,6 +52,35 @@ const routes = [{
     component: () => import( /* webpackChunkName: "setLang" */ '../views/menu/SetLang.vue')
   },
   {
+    path: '/wallet',
+    name: 'Wallet',
+    meta: {
+      requireAuth: true
+    },
+    component: () => import( /* webpackChunkName: "wallet" */ '../views/menu/Wallet.vue')
+  },
+  {
+    path: '/wallet/deposit',
+    name: 'Deposit',
+    component: () => import( /* webpackChunkName: "deposit" */ '../views/wallet/Deposit.vue'),
+  },
+  {
+    path: '/wallet/withdrawal',
+    name: 'Withdrawal',
+    component: () => import( /* webpackChunkName: "withdrawal" */ '../views/wallet/Withdrawal.vue'),
+  },
+  {
+    path: '/wallet/record',
+    name: 'Record',
+    component: () => import( /* webpackChunkName: "Deposit_record" */ '../views/wallet/Deposit_record.vue'),
+  },
+  {
+    path: '/wallet/address',
+    name: 'Address',
+    component: () => import( /* webpackChunkName: "Address" */ '../views/wallet/Address.vue'),
+  },
+  
+  {
     path: '/signUp',
     name: 'SignUp',
     meta: {
@@ -126,7 +155,7 @@ router.beforeEach((to, from, next) => {
       }
       Vue.prototype.$notify({
         message: info,
-        duration: 800,
+        duration: 800
       })
       return next('/login')
     } else {

@@ -15,24 +15,47 @@
     padding: 10px;
 }
 
+.padding-large {
+    padding: 30px;
+}
+
 .padding-tb {
     margin: 30px 0;
 }
 
+.padding-b {
+    padding-bottom: 20px;
+}
+
+.box_sizing {
+    box-sizing: border-box;
+}
+
 .padding-lr {
-    padding: 0 30px;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 .bg-gray {
     background: rgb(29, 38, 52);
 }
-
+.bg-blue {
+    background: #3573FF !important;
+}
 .f-red {
-    color: red;
+    color: #C51C2C !important;
+}
+
+.f-blue {
+    color: #3573FF !important;
+}
+
+.f-white {
+    color: #fff !important;
 }
 
 .f-green {
-    color: green;
+    color: green !important;
 }
 
 .f-gray {
@@ -61,4 +84,23 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.p-center {
+    width: 100%;
+    text-align:center;
+}
+
+.bottom_line {
+    border-bottom: 3px solid #3573FF !important;
+}
+
+.b_line {
+    border-bottom: 2px solid rgb(130, 142, 161) !important;
+}
+
+.bg-line {
+    background: rgb(29, 38, 57) !important;
+    width: 100%;
+    height: 5px;
 }

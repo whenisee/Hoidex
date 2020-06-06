@@ -307,5 +307,45 @@ module.exports = {
                 '제 5 조',
                 '본 성명에서 다루지 않은 문제는 중화 인민 공화국 관련 법률, 행정 법규를 참조하고, 본 성명이 중화 인민 공화국 관련 법률, 행정 법규와 충돌할 경우 중화 인민 공화국 관련 법률, 행정 법규를 준한다.'
             ]
+    },
+    wallet: {
+        wallet: '지갑자산',
+        total: '총자산환산(BTC)',
+        type: '유형',
+        available: '가용',
+        frozen: '동결',
+        valuation: '밸류에이션',
+        operate: '조작',
+        recharge: '충전',
+        withdrawal: '인출',
+        transaction: '거래',
+        
+        warning: '주의사항',
+        address: '충전 주소',
+        amount: '구매수량',
+        buy: '구매수량',
+        record: '충전 기록',
+        
+        assetRecords: '자산 기록',
+        others: '기타',
+        time: '시간',
+        money: '수량',
+        addr: '주소',
+        process: '진도',
+        
+        coinaddress: '코인 주소',
+        Enterquantity: '수량 입력',
+        Allcoins: '모두 다',
+        Availablequantity: '언급 가능 수량',
+        Submitimmediately: '즉시 화폐를 인출하다',
+        Manageaccount: '동전 주소 관리',
+        
+        addressNote: '해당명 USDT/BTC/ETH',
+        Addnow: '지금 추가',
+        Addresslist: '주소 목록',
+        Note: '설명',
+        delete: '삭제',
+        copy: '복제',
+        moneySymbol: '₩'
     }
 }

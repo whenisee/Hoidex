@@ -1,9 +1,9 @@
 <template>
-  <div class="content">
+  <div class="content" :style="[{'background': $store.state.mode? '#fff' : '#1d2635'}]">
     <div>
-      <i class="iconfont icon-xiaoxi"></i>
+      <i class="iconfont icon-xiaoxi" :style="[{'color':!$store.state.mode?'#fff':'#000'}]"></i>
     </div>
-    <div>{{$t('message.nothing')}}</div>
+    <div :style="[{'color':!$store.state.mode?'#fff':'#000'}]">{{$t('message.nothing')}}</div>
   </div>
 </template>
 
@@ -16,7 +16,6 @@
 <style lang="less" scoped>
 .content {
   box-sizing: border-box;
-  background: rgb(29,38,53);
   display: flex;
   padding: 100px;
   box-sizing: border-box;

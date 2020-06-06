@@ -10,6 +10,7 @@ class TVjsApi {
     this.symbol = symbol;
     this.widgets = null; //TODO: tradingview图表
     this.socket = new socket('WSS://exchange.gd-juzheng.com:2345');
+    // this.socket = new socket('WS://127.0.0.1:3000');
     this.interval = '1'; //图表周期
     this.cacheData = {}; //图表缓存数据
     this.resolveSymbolinfo = {}; //币种信息
@@ -18,11 +19,15 @@ class TVjsApi {
     this.studies = []; //配置项
     this.isLoading = true; //是否懒加载
     this.socket.doOpen();
+    this.timer = null;
+    this.skin = 'black'
+    this.bg = '#1b2331'
     this.socket.on('open', () => {
       // TODO: 页面初始化后请求币种基本信息
       this.socket.send(JSON.stringify({
         type: 'subSymbolinfo',
-        value: `market.${this.symbol}.resolveSymbol`
+        value: `market.${this.symbol}.resolveSymbol`,
+        symbol: this.symbol
       }));
     });
     this.socket.on('message', this.onMessage.bind(this));
@@ -33,10 +38,10 @@ class TVjsApi {
    * @description 图表初始化
    */
   init() {
+    console.log(this.bg)
     let resolution = this.interval; //TODO: 图表周期
     let symbol = this.symbol; //币种信息
     let locale = 'zh'; //中文本地化
-    let skin = 'black'; //皮肤
     if (!this.widgets) {
       this.widgets = new TradingView.widget({
         autosize: true,
@@ -47,7 +52,7 @@ class TVjsApi {
         library_path: '../../static/charting_library/',
         timezone: 'Asia/Shanghai',
         custom_css_url: 'chart.css',
-        toolbar_bg: '#1b2331', //工具栏的背景颜色
+        toolbar_bg: this.bg, //工具栏的背景颜色
         locale: locale,
         debug: false,
         theme: 'Dark',
@@ -63,8 +68,8 @@ class TVjsApi {
           "adaptive_logo",
           "hide_left_toolbar_by_default"
         ],
-        overrides: getOverrides(skin),
-        studies_overrides: getStudiesOverrides(skin)
+        overrides: getOverrides(this.skin),
+        studies_overrides: getStudiesOverrides(this.skin)
       });
       this.widgets.onChartReady(() => {
         this.createStudy();
@@ -90,6 +95,22 @@ class TVjsApi {
     this.studies.push(id);
   }
   /**
+   * 
+   * @param {皮肤} e 
+   */
+  changeSkin(type) {
+    this.skin = type
+    if (this.skin == 'white') {
+      this.bg = '#fff'
+    } else {
+      this.bg = '#1b2331'
+    }
+  }
+  /**
+   * 
+   * @param {工具栏背景} e 
+   */
+  /**
    * @description websocket推送信息
    * @param {Object} e
    */
@@ -111,7 +132,6 @@ class TVjsApi {
         const tickerstate = ticker + "state"; //TODO: LongBitGXC/USDT-15state
         const onLoadedCallback = this.cacheData[tickerCallback];
         list = [...list, ...data];
-
         //如果没有缓存数据，则直接填充，发起订阅
         if (!this.cacheData[ticker]) {
           this.cacheData[ticker] = list;
@@ -138,9 +158,9 @@ class TVjsApi {
     case "subscribeBars": //TODO: 订阅后数据
     {
       let data = e.data;
-      setTimeout(()=>{
+      this.timer = setTimeout(() => {
         this.subscribe()
-      },1000)
+      }, 2000)
       if (data) {
         const ticker = `LongBit${this.symbol}-${this.interval}`; //TODO: LongBitGXC/BTC-15
         let barsData = {
@@ -156,8 +176,19 @@ class TVjsApi {
         //TODO: 如果增量更新数据的时间大于缓存时间，而且缓存有数据，数据长度大于0
         if (barsData.time > this.lastTime && this.cacheData[ticker] && this.cacheData[ticker].length) {
           //增量更新的数据直接加入缓存数组
+          // if(this.interval == '1D') {
+          //   if (barsData.time - 86400 > this.lastTime && this.cacheData[ticker] && this.cacheData[ticker].length) {
+          //     this.cacheData[ticker].push(barsData);
+          //     this.lastTime = barsData.time;
+          //   } else {
+          //     this.cacheData[ticker][this.cacheData[ticker].length - 1] = barsData;
+          //   }
+          // } else {
+          //   this.cacheData[ticker].push(barsData);
+          //   this.lastTime = barsData.time;
+          // }
           this.cacheData[ticker].push(barsData);
-          //修改缓存时间
+          // 修改缓存时间
           this.lastTime = barsData.time;
         } else if (barsData.time == this.lastTime && this.cacheData[ticker] && this.cacheData[ticker].length) {
           //如果增量更新的时间等于缓存时间，即在当前时间颗粒内产生了新数据，更新当前数据
@@ -216,22 +247,25 @@ class TVjsApi {
     let ticker = `${symbolInfo.name}-${resolution}`; //TODO: GDEXGDC/GXC-1D
     let tickerload = ticker + "load"; //TODO: GDEXGDC/GXC-1Dload
     let tickerstate = ticker + "state"; //TODO: GDEXGDC/GXC-1Dstate
+    
     if (!this.cacheData[ticker] && !this.cacheData[tickerstate]) { //TODO: 如果缓存没有数据，而且未发出请求，记录当前节点开始时间
+      
+      console.log(symbolInfo.name + '--' + resolution)
+      
       this.cacheData[tickerload] = rangeStartDate;
       //发起请求，从websocket获取当前时间段的数据
       this.initMessage(symbolInfo, resolution, rangeStartDate, rangeEndDate, onLoadedCallback);
       //设置状态为true
       this.cacheData[tickerstate] = !0;
-
       return false;
     }
     // TODO: 获取历史记录
-    if (!this.cacheData[tickerload] || this.cacheData[tickerload] > rangeStartDate) { //TODO: 如果缓存有数据，但是没有当前时间段的数据，更新当前节点时间
-      this.cacheData[tickerload] = rangeStartDate;
-      this.initMessage(symbolInfo, resolution, rangeStartDate, rangeEndDate, onLoadedCallback);
-      this.cacheData[tickerstate] = !0;
-      return false;
-    }
+    // if (!this.cacheData[tickerload] || this.cacheData[tickerload] > rangeStartDate) { //TODO: 如果缓存有数据，但是没有当前时间段的数据，更新当前节点时间
+    //   this.cacheData[tickerload] = rangeStartDate;
+    //   this.initMessage(symbolInfo, resolution, rangeStartDate, rangeEndDate, onLoadedCallback);
+    //   this.cacheData[tickerstate] = !0;
+    //   return false;
+    // }
     if (this.cacheData[tickerstate]) { //TODO: 正在从websocket获取数据，禁止一切操作
       return false;
     }
@@ -249,7 +283,7 @@ class TVjsApi {
     } else {
       this.getBarTimer = setTimeout(() => {
         this.getBars(symbolInfo, resolution, rangeStartDate, rangeEndDate, onLoadedCallback)
-      }, 10);
+      }, 1000);
     }
   }
   /**
@@ -274,7 +308,6 @@ class TVjsApi {
     //TODO: 获取当前时间段的数据，在onMessage中执行回调onLoadedCallback
     if (symbolInfo && resolution && rangeStartDate && rangeEndDate) {
       let symbol = symbolInfo.full_name;
-      let resolutionstr = this.initresolutionstr(resolution);
       let params = {
         type: "getBars",
         value: {
@@ -282,31 +315,35 @@ class TVjsApi {
           resolution: resolution,
           from: rangeStartDate,
           to: rangeEndDate
-        }
+        },
+        symbol: this.symbol
       }
       this.sendMessage(JSON.stringify(params));
     }
   }
-  initresolutionstr(resolution) {
-    let resolutionstr = '';
-    if (resolution <= 60) {
-      resolutionstr = resolution + 'm';
-    } else if (resolution == 240) {
-      resolutionstr = '4h';
-    } else if (resolution == '1D') {
-      resolutionstr = '1d';
-    } else {
-      resolutionstr = '1d';
-    }
-    return resolutionstr;
-  }
+  // initresolutionstr(resolution) {
+  //   let resolutionstr = '';
+  //   if (resolution <= 60) {
+  //     resolutionstr = resolution + 'm';
+  //   } else if (resolution == 'D') {
+  //     resolutionstr = '1w';
+  //   } else if (resolution == '1D') {
+  //     resolutionstr = '1d';
+  //   } else {
+  //     resolutionstr = '1d';
+  //   }
+  //   return resolutionstr;
+  // }
   /**
    * @description 发起订阅
    */
   subscribe() {
+    clearTimeout(this.timer)
     let params = {
       type: "subscribeBars",
-      value: `market.${this.symbol}.kline.${this.interval}`
+      value: `market.${this.symbol}.kline.${this.interval}`,
+      resolution: this.interval,
+      symbol: this.symbol
     }
     this.sendMessage(JSON.stringify(params));
   }
@@ -324,41 +361,42 @@ class TVjsApi {
     delete this.cacheData[tickertime];
     delete this.cacheData[tickerstate];
     delete this.cacheData[tickerCallback];
-    let resolutionstr = this.initresolutionstr(interval);
-    let params = {
-      type: "unsub",
-      value: `market.${this.symbol}.kline.${resolutionstr}`
-    }
-    this.sendMessage(JSON.stringify(params));
+    // let resolutionstr = this.initresolutionstr(interval);
+    // let params = {
+    //   type: "unsub",
+    //   value: `market.${this.symbol}.kline.${resolutionstr}`
+    // }
+    // this.sendMessage(JSON.stringify(params));
   }
   /**
    * @description 切换交易对
    * @param {String} newpair 新交易对
    * @param {String} oldpair 旧交易对
    */
-  switchtranspair(newpair, oldpair) {
-    const newpairinfo = this.getSymbolinfo(newpair); //TODO: 新交易对详情 {coreAssetId: 1, tradeAssetId: 18}
-    // TODO: 旧交易对 停止订阅，删除过期缓存、缓存时间、缓存状态
-    const oldticker = `GDEX${oldpair}-${this.interval}`;
-    this.datafeeds.unsubscribeBars(oldticker); //TODO: 取消订阅
-    const tickertime = oldticker + "load";
-    const tickerstate = oldticker + "state";
-    const tickerCallback = oldticker + "Callback";
-    delete this.cacheData[oldticker];
-    delete this.cacheData[tickertime];
-    delete this.cacheData[tickerstate];
-    delete this.cacheData[tickerCallback];
+  // switchtranspair(newpair, oldpair) {
+  //   console.log("我终于还是被调用了")
+  //   const newpairinfo = this.getSymbolinfo(newpair); //TODO: 新交易对详情 {coreAssetId: 1, tradeAssetId: 18}
+  //   // TODO: 旧交易对 停止订阅，删除过期缓存、缓存时间、缓存状态
+  //   const oldticker = `GDEX${oldpair}-${this.interval}`;
+  //   this.datafeeds.unsubscribeBars(oldticker); //TODO: 取消订阅
+  //   const tickertime = oldticker + "load";
+  //   const tickerstate = oldticker + "state";
+  //   const tickerCallback = oldticker + "Callback";
+  //   delete this.cacheData[oldticker];
+  //   delete this.cacheData[tickertime];
+  //   delete this.cacheData[tickerstate];
+  //   delete this.cacheData[tickerCallback];
 
-    this.symbol = newpair;
-    this.initsymbolparams = newpairinfo;
-    this.isLoading = true;
-    return new Promise((resolve, reject) => {
-      resolve({ //TODO: reslove回递消息确认
-        symbol: this.symbol,
-        initsymbolparams: this.initsymbolparams
-      })
-    });
-  }
+  //   this.symbol = newpair;
+  //   this.initsymbolparams = newpairinfo;
+  //   this.isLoading = true;
+  //   return new Promise((resolve, reject) => {
+  //     resolve({ //TODO: reslove回递消息确认
+  //       symbol: this.symbol,
+  //       initsymbolparams: this.initsymbolparams
+  //     })
+  //   });
+  // }
   /**
    * @description 销毁操作
    */

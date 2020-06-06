@@ -1,11 +1,11 @@
 <template>
-  <div class="user" @click="closeMenu">
+  <div class="user" @click="closeMenu" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
     <!-- 头部信息 -->
-    <div class="user_info">
+    <div class="user_info" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
       <div>
         <img src="@/assets/login.png" />
       </div>
-      <div>
+      <div :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">
         <p>
           <span>{{$t('user.nickname')}}</span>
           <span>{{$t('user.change')}}</span>
@@ -17,7 +17,7 @@
 
     <!-- tab页 -->
     <div class="tabs">
-      <div class="tabs_nav flex">
+      <div class="tabs_nav flex" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]">
         <!-- Tab01 -->
         <div @click="handleTab" id="0">
           <p
@@ -35,7 +35,7 @@
       <!-- tabs内容区 -->
       <div class="tab1_content" v-if="active==0">
         <!-- 1 -->
-        <ul>
+        <ul :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">
           <li>
             <i class="iconfont iconyouxiang"></i>
           </li>
@@ -46,7 +46,7 @@
           </li>
         </ul>
         <!-- 2 -->
-        <ul>
+        <ul :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">
           <li>
             <i class="iconfont iconyouxiang"></i>
           </li>
@@ -57,7 +57,7 @@
           </li>
         </ul>
         <!-- 3 -->
-        <ul>
+        <ul :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">
           <li>
             <i class="iconfont iconyouxiang"></i>
           </li>
@@ -68,7 +68,7 @@
           </li>
         </ul>
         <!-- 4 -->
-        <ul>
+        <ul :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">
           <li>
             <i class="iconfont iconyouxiang"></i>
           </li>
@@ -79,7 +79,7 @@
           </li>
         </ul>
         <!-- 5 -->
-        <ul>
+        <ul :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">
           <li>
             <i class="iconfont iconyouxiang"></i>
           </li>
@@ -90,19 +90,19 @@
           </li>
         </ul>
         <!-- 6 -->
-        <ul>
+        <ul :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">
           <li>
             <i class="iconfont iconyouxiang"></i>
           </li>
           <li>
             <p style="flex: 4">{{$t('user.base')}}</p>
             <p style="text-align: center;">
-              <van-switch inactive-color="rgb(63,77,102)" v-model="checked" />
+              <van-switch inactive-color="rgb(63,77,102)" v-model="checked" size="16" />
             </p>
           </li>
         </ul>
         <!-- 7 -->
-        <ul>
+        <ul :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">
           <li>
             <i class="iconfont iconyouxiang"></i>
           </li>
@@ -155,15 +155,15 @@
         <div class="desc" v-if="loginInfo == 'history'">
           <ul>
             <li class="flex">
-              <p>登录时间</p>
+              <p>{{$t('user.time')}}</p>
               <p>2020-05-12 11:55:40</p>
             </li>
             <li class="flex">
-              <p>登录时间</p>
+              <p>{{$t('user.time')}}</p>
               <p>2020-05-12 11:55:40</p>
             </li>
             <li class="flex">
-              <p>登录时间</p>
+              <p>{{$t('user.time')}}</p>
               <p>2020-05-12 11:55:40</p>
             </li>
           </ul>
@@ -286,9 +286,6 @@ export default {
         display: inline-block;
         padding: 20px 0;
         color: rgb(130, 142, 161);
-      }
-      .white {
-        color: #fff;
       }
       .line {
         border-bottom: 3px solid rgb(36, 160, 245);

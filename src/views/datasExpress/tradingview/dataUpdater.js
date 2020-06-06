@@ -65,8 +65,10 @@ class dataUpdater {
      */
     periodLengthSeconds(resolution, requiredPeriodsCount) {
         let daysCount = 0;
-        if (resolution === 'D' || resolution === '1D') {
+        if (resolution === '1D') {
             daysCount = requiredPeriodsCount;
+        } else if (resolution === 'D') {
+            daysCount = 7 * requiredPeriodsCount;
         } else if (resolution === 'M' || resolution === '1M') {
             daysCount = 31 * requiredPeriodsCount;
         } else if (resolution === 'W' || resolution === '1W') {
@@ -94,13 +96,12 @@ class dataUpdater {
             }
 
             const previousBar = bars[bars.length - 2]
-            console.log('isNewBar');
-            console.log(previousBar);
             subscriptionRecord.listener(previousBar)
         }
         subscriptionRecord.lastBarTime = lastBar.time
         subscriptionRecord.listener(lastBar)
     }
+    
 }
 
 export default dataUpdater;

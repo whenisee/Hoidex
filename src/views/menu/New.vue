@@ -1,7 +1,7 @@
 <template>
-  <div class="new">
+  <div class="new" :style="[{'background':$store.state.mode?'#f7efef':'#1d2635'}]">
     <!-- 第一块 -->
-    <div class="padding-b box">
+    <div class="padding-b box" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
       <h2 class="f-white padding-tb f-big f-bold">NSC</h2>
       <p>{{$t('new.issue')}}</p>
       <p class="f-blue f-bold f-big">1 NSC = 0.025 USDT</p>
@@ -39,7 +39,7 @@
             ></i>
           </div>
           <div class="inp bottom_line">
-            <input style="color: #fff" type="number" placeholder="0" />
+            <input style="color: #fff" type="number" placeholder="0" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]" />
           </div>
           <div class="btn">
             <div>ALL</div>
@@ -54,9 +54,9 @@
     </div>
 
     <!-- 第二块 -->
-    <div class="box">
+    <div class="box" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
       <h3>{{$t('new.cycle')}}</h3>
-      <van-steps :active="active" style="background: rgb(38, 48, 67); width:93%;">
+      <van-steps :active="active" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
         <van-step></van-step>
         <van-step></van-step>
         <van-step></van-step>
@@ -93,7 +93,7 @@
       <p class="line-height">NSC的诞生是为了联系人类文明。NSC使用异步数据同步和中继节点概念来形成兼容的传输协议，以通过Polaris跨链协议在不同的块网络之间切换。将使用不同的区块链。网络互连使区块链成为可能。从局域网到Internet的网络转换在整个区块网络中都是可持续的。NSC Chain是世界上第壹个匿名跨链数据技术平台，通过北斗跨链技术和量子文件切片技术，数据保留和跨链资产交易更加安全高效。更多的参与者保护自己的隐私；并且可以进行跨链应用。目前，NSC研发团队已与中国的“壹带壹路”决策层进行了深入的合作。尽管NSC将来将用作交易代币，但它也将能够通过分布式分类帐安全地存储海量数据，从而提高国际贸易的便利性和安全性。</p>
       <p>白皮书：</p>
       <p>北星链：http://www.nschain.biz/</p>
-    </div> -->
+    </div>-->
   </div>
 </template>
 
@@ -106,23 +106,22 @@ export default {
     };
   },
   methods: {
-    
+    initDatas() {
+      // const token = localStorage.getItem('token')
+      // this.axios.get('https://hoidex.com/api/user/newregion').then(res=>{
+      //   console.log(res)
+      // })
+    }
   },
   created() {
-    // const token = localStorage.getItem('token')
-    // this.axios.post('https://hoidex.com/api/user/newregion',{},{
-    //   headers: { Authorization: token },
-    //   emulateJSON: true
-    // }).then(res=>{
-    //   console.log(res)
-    // })
-  },
+    this.initDatas()
+  }
 };
 </script>
 
 <style lang="less" scoped>
 .new {
-  background: rgb(29,38,53);
+  background: rgb(29, 38, 53);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -157,7 +156,7 @@ export default {
     line-height: 40px;
   }
   .steps {
-    div { 
+    div {
       flex: 1;
       p {
         padding: 10px 0;
@@ -193,7 +192,7 @@ export default {
     font-size: 30px;
   }
   /deep/ .van-step__circle-container {
-    background: rgb(38, 48, 67);
+    background:transparent;
     i {
       font-size: 40px;
     }

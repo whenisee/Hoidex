@@ -2,20 +2,24 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state: {
+        // 控制菜单的登录注册显示
         online: false,
-        marketinfo: {},
-        marketDepth: [],
+        // 币种搜索
         home_datas: [],
+        // 首页tab栏缓存数据
         usdt_datas: [],
         btc_datas: [],
+        // 首页tab栏缓存分类
         order: 'id',
         sort: 'desc',
-        TradingView: {},
         market: 'BTC',
         symbol: 'usdt',
         market_symbol: 'BTC/USDT',
+        // 多语言
         langShow: 0,
-        locale: 'zh'
+        locale: 'zh',
+        // 默认白天
+        mode: true
     },
     mutations: {
         edit(state, bool) {
@@ -32,18 +36,6 @@ const store = new Vuex.Store({
             if(res.type=='btc') {
                 state.btc_datas = res.datas
             }
-        },
-        // 交易页面下的数据
-        sendMarketInfo(state, marketinfo) {
-            state.marketinfo = marketinfo
-        },
-        sendMarketDepth(state, marketDepth) {
-            marketDepth.forEach(item=>{
-                if(!item.price) {
-                    item.price = 0
-                }
-            })
-            state.marketDepth = marketDepth
         },
         // 传递websocket的param
         handleParam(state, obj) {
@@ -67,6 +59,10 @@ const store = new Vuex.Store({
         // 记录多语言
         handleLocale(state, val) {
             state.locale = val
+        },
+        // 模式选择
+        handleMode(state, bool) {
+            state.mode = bool
         }
     }
 })

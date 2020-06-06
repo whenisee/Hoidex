@@ -1,8 +1,8 @@
 <template>
   <div class="kx">
     <!-- 价格图表 -->
-    <div class="changeChart flex">
-      <div>{{$t('dash.priceChart')}}</div>
+    <div class="changeChart flex" :style="[{'background':$store.state.mode?'#f7efef':'#2e2e2e'}]">
+      <div :style="{'color':!$store.state.mode?'#fff':'#1d2635'}">{{$t('dash.priceChart')}}</div>
       <div>
         <i
           v-for="(item, index) of pic_choose"
@@ -15,7 +15,7 @@
     <!-- 内容 -->
     <div class="content" v-show="show">
       <!-- 根据时间切换 -->
-      <ul class="flex">
+      <ul class="flex" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
         <li
           v-for="(item, index) of time_choose"
           :key="item.id"
@@ -24,8 +24,8 @@
         >{{item.time}}</li>
       </ul>
       <!-- more -->
-      <div class="more" v-if="more_show">
-        <span v-for="item of more" :key="item.id" @click="chooseMore(item.time)">{{item.time}}</span>
+      <div class="more" v-if="more_show" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
+        <span v-for="item of more" :key="item.id" @click="chooseMore(item.time)" :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{item.time}}</span>
       </div>
       <!-- 图表区 -->
       <div class="chart">
@@ -33,7 +33,7 @@
       </div>
     </div>
     <div v-show="!show">
-      <div id="echart" ref="myechart" style="height: 400px;width:10rem"></div>
+      <div id="echart" ref="myechart" style="height: 430px;width:10rem" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]"></div>
     </div>
   </div>
 </template>
@@ -60,21 +60,20 @@ export default {
       show: true,
       jsApi: null,
       more: [
-        { time: "240min", id: 0 },
+        { time: "4h", id: 0 },
         { time: "1D", id: 1 },
-        { time: "5D", id: 2 },
-        { time: "1W", id: 3 },
-        { time: "1M", id: 4 }
+        { time: "1W", id: 2 },
+        { time: "1M", id: 3 }
       ],
-      more_show: false
+      more_show: false,
+      datas: [],
+      market: "",
+      symbol: ""
     };
   },
   mounted() {
-    jsApi = new TVjsApi("GXC-USDT");
-    jsApi.init(); //图表初始化
-    this.jsApi = jsApi;
     this.initEcharts();
-
+    this.initKline()
     // 点击其他位置关闭下拉时间菜单
     let that = this;
     document.addEventListener("click", function(e) {
@@ -84,6 +83,20 @@ export default {
     });
   },
   methods: {
+    // 初始K线
+    initKline() {
+      this.market = this.$store.state.market.toLowerCase();
+      this.symbol = this.$store.state.symbol;
+      let str = this.market + this.symbol
+      jsApi = new TVjsApi(str);
+      if(this.$store.state.mode == true) {
+        jsApi.changeSkin('white')
+      } else {
+        jsApi.changeSkin('black')
+      }
+      jsApi.init(); //图表初始化
+      this.jsApi = jsApi;
+    },
     // 选择时间
     chooseTime(index) {
       this.active = index;
@@ -134,21 +147,17 @@ export default {
     // 选择更多时间
     chooseMore(time) {
       switch (time) {
-        case "240min":
-          this.time_choose[6].time = time;
-          this.jsApi.widgets.chart().setResolution("240");
-          break;
         case "1D":
           this.time_choose[6].time = time;
           this.jsApi.widgets.chart().setResolution("1D");
           break;
-        case "5D":
-          this.time_choose[6].time = time;
-          this.jsApi.widgets.chart().setResolution("5D");
-          break;
         case "1W":
           this.time_choose[6].time = time;
           this.jsApi.widgets.chart().setResolution("1W");
+          break;
+        case "4h":
+          this.time_choose[6].time = time;
+          this.jsApi.widgets.chart().setResolution("240");
           break;
         case "1M":
           this.time_choose[6].time = time;
@@ -172,18 +181,35 @@ export default {
       var echartCloth = this.$refs.myechart;
       var myChart = echarts.init(echartCloth);
       // 获取深度数据
-      let depth = this.$store.state.marketDepth;
-      let buyDepth = depth.filter(item => item.direction == "buy");
-      let sellDepth = depth.filter(item => item.direction == "sell");
+      let buyDepth = this.$parent.depth.buy;
+      let sellDepth = this.$parent.depth.sell;
+      // let history = this.$parent.HistoryTrade
       var option = {
-        tooltip: {},
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "shadow",
+            snap: true
+          }
+        },
         xAxis: {
           splitLine: {
-            show: false
+            show: false,
+            interval: 0
+          },
+          type: "value",
+          scale: true,
+          splitNumber: 7,
+          axisLabel: {
+            interval: 0
           },
           data: []
         },
         grid: {
+          // left: "12%",
+          show: true,
+          containLabel: true,
+          borderColor: "rgb(144,144,125)"
         },
         textStyle: {
           color: "#aaa"
@@ -191,7 +217,10 @@ export default {
         yAxis: {
           splitLine: {
             show: false
-          }
+          },
+          position: "right",
+          // boundaryGap: ["20%", "20%"],
+          min: 0
         },
         series: [
           {
@@ -219,12 +248,50 @@ export default {
           }
         ]
       };
-      buyDepth.forEach((item, index) => {
-        option.series[0].data.push([index, item.price]);
-      });
-      sellDepth.forEach((item, index) => {
-        option.series[1].data.push([index + buyDepth.length, item.price]);
-      });
+      option.series[0].data.push([32.11, 2550.52]);
+      option.series[0].data.push([67.11, 2350.12]);
+      option.series[0].data.push([88.11, 2150]);
+      option.series[0].data.push([101.11, 2050]);
+      option.series[0].data.push([107.11, 2010.01]);
+      option.series[0].data.push([110.11, 1990.54]);
+      option.series[0].data.push([132.97, 1880]);
+      option.series[0].data.push([152.97, 1690]);
+      option.series[0].data.push([195.97, 1690.45]);
+      option.series[0].data.push([211.97, 1630]);
+      option.series[0].data.push([281.85, 1500]);
+      option.series[0].data.push([341.97, 1400]);
+      option.series[0].data.push([367.11, 1257.98]);
+      option.series[0].data.push([377.52, 1211.3]);
+      option.series[0].data.push([380, 1200]);
+      option.series[0].data.push([382.54, 1160]);
+      option.series[0].data.push([390, 1100]);
+      option.series[0].data.push([400, 1000]);
+      option.series[0].data.push([410.55, 974]);
+      option.series[0].data.push([416, 651]);
+      option.series[0].data.push([420.51, 323]);
+      option.series[0].data.push([423, 99]);
+      option.series[0].data.push([444, 12]);
+      option.series[1].data.push([449, 8]);
+      option.series[1].data.push([452, 22]);
+      option.series[1].data.push([475.12, 222]);
+      option.series[1].data.push([531.51, 222]);
+      option.series[1].data.push([543.01, 651]);
+      option.series[1].data.push([590, 1010]);
+      option.series[1].data.push([610.55, 1510]);
+      option.series[1].data.push([770, 1810]);
+      option.series[1].data.push([781.55, 1912.2]);
+      option.series[1].data.push([797.11, 2011.25]);
+      option.series[1].data.push([811.25, 2314.2]);
+      option.series[1].data.push([987.12, 2541.9]);
+      option.series[1].data.push([1000, 2845.2]);
+      option.series[1].data.push([1100, 2845.2]);
+      option.series[1].data.push([1400, 2845.2]);
+      // buyDepth.forEach((item, index) => {
+      //   option.series[0].data.push([item.price, item.account]);
+      // });
+      // sellDepth.forEach((item, index) => {
+      //   option.series[1].data.push([item.price, item.account]);
+      // });
       myChart.setOption(option);
     }
   },
@@ -234,6 +301,22 @@ export default {
         jsApi = null;
       }
     });
+  },
+  watch: {
+    "$parent.depth": function() {
+      this.initEcharts();
+    },
+    "$store.state.market": function() {
+      this.market = this.$store.state.market.toLowerCase();
+      this.initKline()
+    },
+    "$store.state.symbol": function() {
+      this.symbol = this.$store.state.symbol;
+      this.initKline()
+    },
+    "$store.state.mode": function() {
+      this.initKline()
+    }
   }
 };
 </script>
@@ -242,6 +325,7 @@ export default {
 .kx {
   width: 100%;
   box-sizing: border-box;
+  background: rgb(29, 38, 53);
   #tv_chart_container {
     height: 100%;
   }
@@ -283,14 +367,12 @@ export default {
       padding: 10px 15px;
     }
     .active {
-      color: #fff;
       border-bottom: 3px solid rgb(36, 160, 245);
     }
   }
   .chart {
-    height: 100%;
+    height: 95%;
   }
-  
   .content {
     width: 100%;
     height: 11rem;

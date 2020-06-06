@@ -1,6 +1,6 @@
 <template>
-  <div class="agreement">
-    <h2>{{$t('agreement.title[1]')}}</h2>
+  <div class="agreement" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
+    <h2 :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$t('agreement.title[1]')}}</h2>
     <p>{{$t('agreement.usertime')}}</p>
     <p>{{$t('agreement.title[1]')}}</p>
     <p>{{$t('agreement.userone[0]')}}</p>

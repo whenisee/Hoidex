@@ -302,5 +302,45 @@ module.exports = {
                 '第5条',
                 '本声明に関連しない問題は中華人民共和国関連法律、行政法規を参照し、本声明が中華人民共和国関連法律、行政法規と衝突した場合、中華人民共和国関連法律、行政法規を基準とする。'
             ]
+    },
+    wallet: {
+        wallet: '財布資産',
+        total: '総資産換算(BTC)',
+        type: '種類',
+        available: '利用可能',
+        frozen: '凍結',
+        valuation: '評価値',
+        operate: '取扱',
+        recharge: '通貨チャージ',
+        withdrawal: '通貨引き出し',
+        transaction: '取引',
+        
+        warning: '注意事項',
+        address: 'チャージアドレス',
+        amount: '購入数量',
+        buy: 'すぐに購入します',
+        record: 'チャージ記録',
+        
+        assetRecords: '資産記録',
+        others: 'そのほか',
+        time: '時間',
+        money: '数量',
+        addr: '住所',
+        process: '進度',
+        
+        coinaddress: 'コインのアドレス',
+        Enterquantity: '入力数量',
+        Allcoins: 'すべて',
+        Availablequantity: '持ち出せる数量',
+        Submitimmediately: 'ただちに貨幣を引き出します',
+        Manageaccount: 'アカウントの管理',
+        
+        addressNote: '対応名称USDT/BTC/ETH',
+        Addnow: 'すぐに追加',
+        Addresslist: 'アドレスリスト',
+        Note: '備考',
+        delete: '削除',
+        copy: 'コピー',
+        moneySymbol: '￥'
     }
 }

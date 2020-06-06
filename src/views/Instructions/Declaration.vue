@@ -1,6 +1,6 @@
 <template>
-  <div class="agreement">
-    <h2>{{$t('agreement.title[3]')}}</h2>
+  <div class="agreement" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
+    <h2 :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$t('agreement.title[3]')}}</h2>
     <p>{{$t('agreement.legaltime')}}</p>
     <p>{{$t('agreement.title[3]')}}</p>
     <p>{{$t('agreement.legal[0]')}}</p>

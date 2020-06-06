@@ -11,7 +11,6 @@ class datafeeds {
    * @param {*Function} callback  回调函数 
    */
   onReady(callback) {
-    console.log('1.onReady running......');
     return new Promise((resolve, reject) => {
       let configuration = this.defaultConfiguration();
       if (this.self.getConfig) {
@@ -66,7 +65,6 @@ class datafeeds {
    * @param {*} onResetCacheNeededCallback 
    */
   subscribeBars(symbolInfo, resolution, onRealtimeCallback, subscriberUID, onResetCacheNeededCallback) {
-    console.log('4.订阅K线数据....');
     this.barsUpdater.subscribeBars(symbolInfo, resolution, onRealtimeCallback, subscriberUID, onResetCacheNeededCallback);
   }
   /**
@@ -78,6 +76,7 @@ class datafeeds {
     this.barsUpdater.unsubscribeBars(subscriberUID);
     this.self.unSubscribe(subscriberUID);
   }
+  
   /**
    * @description 修改默认配置
    */
@@ -85,7 +84,8 @@ class datafeeds {
     return {
       supports_search: false,
       supports_group_request: false,
-      supported_resolutions: ['1', '5', '15', '30', '60', '240', '1D', '5D', '1W', '1M'],
+      // supported_resolutions: ['1', '5', '15', '30', '60', '240', '1D', '5D', '1W', '1M'],
+      supported_resolutions: ['1', '5', '15', '30', '60', '240', '1D', '1W', '1M'],
       supports_marks: true,
       supports_timescale_marks: true,
       supports_time: true
@@ -103,14 +103,16 @@ class datafeeds {
       // 'exchange': "LongBit",
       'full_name': this.self.symbol,
       'has_intraday': true,
-      'intraday_multipliers': ["1S", "1", "5", "15", "30", "60", "240"],
+      // 'intraday_multipliers': ["1S", "1", "5", "15", "30", "60", "240"],
+      'intraday_multipliers': ["1S", '1', '5', '15', '30', '60', '240',  '1D', '1W', '1M'],
       'legs': this.self.symbol,
       'minmov': 1,
       'name': `LongBit${this.self.symbol}`,
       'pricescale': 100000,
       'pro_name': this.self.symbol,
       'session': "24x7",
-      'supported_resolutions': ["1S", "1", "5", "15", "30", "60", "240", "1D", "5D", "1W", "1M"],
+      // 'supported_resolutions': ["1S", "1", "5", "15", "30", "60", "240", "1D", "5D", "1W", "1M"],
+      'supported_resolutions': ['1S', '1', '5', '15', '30', '60', '240',  '1D', '1W', '1M'],
       'ticker': `LongBit:${this.self.symbol}`,
       'timezone': "Asia/Shanghai",
       'type': "crypto",

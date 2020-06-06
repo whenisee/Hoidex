@@ -2,9 +2,9 @@
   <div class="language">
     <div class="content">
       <div class="item" v-for="item of languages" :key="item.active" @click="handleLang(item.active, item.type)">
-        <div>{{item.lang}}</div>
+        <div :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{item.lang}}</div>
         <div>
-          <van-icon name="success" v-if="show == item.active" />
+          <van-icon name="success" v-if="show == item.active" :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]"/>
         </div>
       </div>
     </div>

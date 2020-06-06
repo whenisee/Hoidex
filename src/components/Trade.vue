@@ -20,7 +20,7 @@ export default {
       var str = market + '/' + symbol
       this.$store.commit('addMarket', str)
       this.$emit('close')
-      this.$router.push({path: '/DASH_BTC/jy', query: { name: market }})
+      // this.$router.push({path: '/DASH_BTC/jy', query: { name: market }})
     }
   }
 };

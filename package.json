@@ -12,6 +12,7 @@
     "core-js": "^3.6.4",
     "echarts": "^4.7.0",
     "lib-flexible": "^0.3.2",
+    "vue-clipboard2": "^0.3.1",
     "vue-i18n": "^8.17.6",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.1.6",

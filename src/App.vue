@@ -1,89 +1,114 @@
 <template>
   <div id="app">
     <!-- 顶部导航栏 -->
-    <div id="nav">
+    <div id="nav" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
       <div @click="closePop()">
         <router-link to="/">
-          <img src="./assets/home.png" alt />
+          <img :src="$store.state.mode?require('./assets/home02.png'):require('./assets/home01.png')" alt />
         </router-link>
       </div>
       <!-- 头部协议选择 -->
-      <div class="declaration" @click="showDeclaration()" v-if="showTitle">
+      <div class="declaration" @click="showDeclaration()" v-if="showTitle" :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">
         {{title}}
         <i class="iconfont icon-xialasanjiaoxingx"></i>
       </div>
 
       <!-- 头部币种选择 -->
-      <div class="declaration" @click="showTrade()" v-if="showTradeTitle">
+      <div class="declaration" @click="showTrade()" v-if="showTradeTitle" :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">
         {{tradeTitle}}
         <i class="iconfont icon-xialasanjiaoxingx"></i>
       </div>
-
+      <div class="mode" v-if="showMode">
+        <ul>
+          <li :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{mode}}</li>
+          <li>
+            <van-Switch v-model="isChoose" size="14px" @change="changeMode"></van-Switch>
+          </li>
+        </ul>
+      </div>
       <!-- 头部菜单选择 -->
       <div class="list">
         <div @click="closePop()">
-          <router-link v-if="showLogin" to="login">{{$t('message.login')}}/{{$t('message.signUp')}}</router-link>
+          <router-link v-if="showLogin" to="login" :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$t('message.login')}}/{{$t('message.signUp')}}</router-link>
         </div>
         <div>
-          <i class="iconfont icon-zhankai" @click="handlePopup"></i>
+          <i class="iconfont icon-zhankai" @click="handlePopup" :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]"></i>
         </div>
       </div>
     </div>
 
-    <!-- 清除定位的盒子 -->
-    <div class="block"></div>
-
     <!-- 视图区 -->
-    <div class="content">
+    <div class="content" :style="[{'background': $store.state.mode ? '#fff' : '#1d2635'}]">
       <router-view />
-      <!-- 菜单弹出层 -->
-    <van-popup v-model="show" position="right">
-      <!-- 登录注册 -->
-      <div class="container">
-        <div
-          class="btn login_in"
-          @click="login()"
-          v-if="!$store.state.online"
-        >{{$t('message.login')}}</div>
-        <div
-          class="btn sign_up"
-          @click="sighUp()"
-          v-if="!$store.state.online"
-        >{{$t('message.signUp')}}</div>
+    </div>
+    <!-- 菜单弹出层 -->
+    <transition name="fade">
+      <div class="expand" v-show="show" :style="[{'background': $store.state.mode ? '#fff' : '#1d2635'}]">
+        <!-- 登录注册 -->
+        <div class="container">
+          <div
+            class="btn login_in"
+            :style="[{'background': $store.state.mode ? '#fff' : '#1d2635'}, {'color':!$store.state.mode?'#fff':'#1d2635'}]"
+            @click="login()"
+            v-if="!$store.state.online"
+          >{{$t('message.login')}}</div>
+          <div
+            class="btn sign_up"
+            @click="sighUp()"
+            v-if="!$store.state.online"
+          >{{$t('message.signUp')}}</div>
+        </div>
+        <!-- 菜单列表 -->
+        <div class="nav_second">
+          <div @click="handleMoney()">
+            <i class="iconfont icon-jiaoyi trans"></i>
+            {{$t('message.CurrencyTrading')}}
+          </div>
+          <div @click="handleUser()">
+            <i class="iconfont icon-icon-user-light"></i>
+            {{$t('message.account')}}
+          </div>
+          <div @click="handleMessage()">
+            <i class="iconfont icon-xiaoxi1"></i>
+            {{$t('message.message')}}
+          </div>
+          <div @click="handleLanguage()">
+            <i class="iconfont iconshezhi"></i>
+            {{$t('message.language')}}
+          </div>
+          <div @click="handleNew()">
+            <i class="iconfont iconchenggong"></i>
+            {{$t('message.new')}}
+          </div>
+          <div @click="handleIssue()">
+            <i class="iconfont iconshenqing"></i>
+            {{$t('message.currency')}}
+          </div>
+          <div @click="handleWallet()">
+            <i class="iconfont iconqianbao"></i>
+            {{$t('wallet.wallet')}}
+          </div>
+          <!-- 退出 -->
+          <div @click="handleExit()" v-if="$store.state.online">
+            <i class="iconfont icontuichu"></i>
+            {{$t('message.exit')}}
+          </div>
+        </div>
       </div>
-      <!-- 菜单列表 -->
-      <div class="nav_second">
-        <div @click="handleMoney()">
-          <i class="iconfont icon-jiaoyi trans"></i>
-          {{$t('message.CurrencyTrading')}}
-        </div>
-        <div @click="handleUser()">
-          <i class="iconfont icon-icon-user-light"></i>
-          {{$t('message.account')}}
-        </div>
-        <div @click="handleMessage()">
-          <i class="iconfont icon-xiaoxi1"></i>
-          {{$t('message.message')}}
-        </div>
-        <div @click="handleLanguage()">{{$t('message.language')}}</div>
-        <div @click="handleNew()">{{$t('message.new')}}</div>
-        <div @click="handleIssue()">{{$t('message.currency')}}</div>
-        <div @click="handleExit()" v-if="$store.state.online">{{$t('message.exit')}}</div>
-      </div>
-    </van-popup>
+    </transition>
 
     <!-- 用户协议弹出层 -->
     <van-popup
       v-model="declarationShow"
       position="top"
-      style="margin-top: 50px; height: 700px; background: rgb(29, 38, 53);"
+      :style="[{'margin-top': '50px'}, {'height': '700px'}, {'background': $store.state.mode? '#fff' : '#1d2635'}]"
     >
       <!-- 协议列表 -->
       <div class="titleMenu">
-        <div @click="navTo(0)">{{$t('agreement.title[0]')}}</div>
-        <div @click="navTo(1)">{{$t('agreement.title[1]')}}</div>
-        <div @click="navTo(2)">{{$t('agreement.title[2]')}}</div>
-        <div @click="navTo(3)">{{$t('agreement.title[3]')}}</div>
+        <div @click="navTo(0)" :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$t('agreement.title[0]')}}</div>
+        <div @click="navTo(1)" :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$t('agreement.title[1]')}}</div>
+        <div @click="navTo(2)" :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$t('agreement.title[2]')}}</div>
+        <div @click="navTo(3)" :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$t('agreement.title[3]')}}</div>
       </div>
     </van-popup>
 
@@ -91,7 +116,7 @@
     <van-popup
       v-model="tradeShow"
       position="top"
-      style="margin-top: 50px; background: rgb(29,38,53)"
+      :style="[{'margin-top': '50px'}, {'background': $store.state.mode? '#fff' : '#1d2635'}]"
       z-index:2000
     >
       <!-- 币种列表 -->
@@ -100,10 +125,9 @@
         <van-tabs
           v-model="active"
           color="rgb(34, 141, 215)"
-          background="rgb(29,38,53)"
+          :background="$store.state.mode? '#fff' : '#1d2635'"
           :border="false"
-          title-active-color="rgba(237, 244, 248, 1)"
-          title-inactive-color="#aaa"
+          title-inactive-color="[{'color':!$store.state.mode?'#fff':'#1d2635'}]"
           line-width="50"
         >
           <van-tab :title="$t('message.optional')">
@@ -118,9 +142,6 @@
         </van-tabs>
       </div>
     </van-popup>
-    </div>
-
-    
   </div>
 </template>
 <script>
@@ -134,7 +155,7 @@ export default {
   },
   data() {
     return {
-      active: 0,
+      active: 1,
       show: false,
       // 协议弹出层
       declarationShow: false,
@@ -146,7 +167,11 @@ export default {
       usdt_datas: [],
       btc_datas: [],
       ws: null,
-      url: 1
+      ws02: null,
+      url: 1,
+      // 模式选择
+      isChoose: false,
+      mode: '白天'
     };
   },
   computed: {
@@ -170,6 +195,13 @@ export default {
         return false;
       }
       return true;
+    },
+    // 首页显示夜间模式
+    showMode: function() {
+      if (this.$route.path !== "/") {
+        return false;
+      }
+      return true;
     }
   },
   methods: {
@@ -179,7 +211,16 @@ export default {
       this.tradeShow = false;
       this.show = !this.show;
     },
-
+    // 选择模式
+    changeMode(value) {
+      if (value == false) {
+        this.mode = '白天'
+        this.$store.commit('handleMode', true)
+      } else {
+        this.mode = '夜间'
+        this.$store.commit('handleMode', false)
+      }
+    },
     // 协议弹出框
     showDeclaration() {
       this.show = false;
@@ -250,6 +291,11 @@ export default {
       this.handlePopup();
     },
 
+    // 钱包资产
+    handleWallet() {
+      this.$router.push({ path: "/wallet" });
+      this.handlePopup();
+    },
     // 协议列表跳转
     navTo(url) {
       this.url = url;
@@ -284,7 +330,7 @@ export default {
       this.handlePopup();
       this.$store.commit("edit", false);
       this.$router.push("/");
-      this.$notify({ type: "success", message: "退出登录！" });
+      this.$notify({ type: "success", message: "退出登录！", duration: 800 });
     },
     init() {
       var that = this;
@@ -305,16 +351,44 @@ export default {
         if (that.ws.readyState == 1) {
           setTimeout(() => {
             ws.send(JSON.stringify(param));
-          }, 2000);
+          }, 500);
         }
       };
       ws.onmessage = function(e) {
         var res = JSON.parse(e.data);
+        // that.btc_datas = res;
+        that.usdt_datas = res;
+      };
+
+      if ("WebSocket" in window) {
+        var ws02 = new WebSocket("WSS://exchange.gd-juzheng.com:2345");
+        this.ws02 = ws02;
+      }
+      var param02 = {
+        type: "index",
+        symbol: "BTC",
+        order: "weigh",
+        sort: "desc",
+        market: "",
+        think_var: "en"
+      };
+
+      ws02.onopen = function() {
+        if (that.ws02.readyState == 1) {
+          setTimeout(() => {
+            ws02.send(JSON.stringify(param02));
+          }, 500);
+        }
+      };
+      ws02.onmessage = function(e) {
+        var res = JSON.parse(e.data);
         that.btc_datas = res;
+        // that.usdt_datas = res
       };
     }
   },
   created() {
+    // console.log(this.$store.state.mode)
     // this.$store.commit("tradingView", TradingView);
     if (localStorage.getItem("token")) {
       this.$store.commit("edit", true);
@@ -336,12 +410,28 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+@import url('../src/assets/css/mode.less');
+.expand {
+  position: fixed;
+  top: 90px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3000;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: left 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  left: 100%;
+}
 .van-popup {
   width: 100%;
-  background: rgb(29, 38, 53);
   position: fixed;
-  // top: 100px;
-  // bottom: 0;
+  top: 0;
+  bottom: 0;
 }
 #nav {
   z-index: 3000;
@@ -349,7 +439,18 @@ export default {
   box-sizing: border-box;
   padding: 30px;
   display: flex;
-  background: rgb(29, 38, 53);
+  // 模式选择
+  .mode {
+    ul {
+      display: flex;
+      width: 80%;
+      justify-content: space-evenly;
+      li {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
   div {
     flex: 1;
     display: flex;
@@ -359,12 +460,10 @@ export default {
       justify-content: flex-end;
     }
     a {
-      color: #fff;
       font-size: 26px;
     }
     i {
       font-size: 28px;
-      color: #fff;
       margin: 0 30px;
     }
   }
@@ -404,18 +503,11 @@ export default {
   }
 }
 
-.block {
-  width: 100%;
-  height: 100px;
-  background: rgb(29, 38, 53);
-}
-
 .content {
   width: 100%;
   position: absolute;
-  top: 100px;
+  top: 90px;
   bottom: 0;
-  background: rgb(29, 38, 53);
   &::-webkit-scrollbar {
     display: none; //取消滚动轴
   }
@@ -437,7 +529,6 @@ export default {
   .login_in {
     border: 1px solid rgb(36, 160, 245);
     color: #fff;
-    background: rgb(29, 38, 53);
   }
   .sign_up {
     background: rgb(36, 160, 245);

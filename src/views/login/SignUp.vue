@@ -10,13 +10,13 @@
     </div>
 
     <!-- 选择注册类型 -->
-    <div class="container">
+    <div class="container" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
       <van-tabs
         v-model="active"
         color="rgb(34, 141, 215)"
-        background="rgb(29,38,53)"
+         :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]"
         :border="false"
-        title-active-color="rgba(237, 244, 248, 1)"
+        title-active-color="rgb(205, 244, 248)"
         title-inactive-color="#aaa"
         line-width="140"
       >
@@ -32,31 +32,33 @@
                 readonly
                 v-model="form.addr"
                 @click="handleActive"
+                 :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]"
               />
               <!-- 选择菜单 -->
               <transition name="fade">
-                <section v-if="isActive && lang=='zh'">
+                <section v-if="isActive && lang=='zh'"  :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
                   <p
                     v-for="(item, index) of areaDatas"
                     :key="index"
                     @click="handleChoose(item.country.zh_name, item.code)"
+                    :style="[{'background':$store.state.mode?'#fff':'#1d2635'}, {'color':!$store.state.mode?'#fff':'#1d2635'}]"
                   >{{item.country.zh_name}}{{item.code}}</p>
                 </section>
-                <section v-if="isActive && lang=='en'">
+                <section v-if="isActive && lang=='en'"  :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
                   <p
                     v-for="(item, index) of areaDatas"
                     :key="index"
                     @click="handleChoose(item.country.en_name, item.code)"
                   >{{item.country.en_name}}{{item.code}}</p>
                 </section>
-                <section v-if="isActive && lang=='jp'">
+                <section v-if="isActive && lang=='jp'"  :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
                   <p
                     v-for="(item, index) of areaDatas"
                     :key="index"
                     @click="handleChoose(item.country.jp_name, item.code)"
                   >{{item.country.jp_name}}{{item.code}}</p>
                 </section>
-                <section v-if="isActive && lang=='ko'">
+                <section v-if="isActive && lang=='ko'"  :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
                   <p
                     v-for="(item, index) of areaDatas"
                     :key="index"
@@ -67,20 +69,20 @@
             </div>
             <div class="password">
               {{$t('signup.phone')}}
-              <input type="text" v-model="form.tel" />
+              <input type="text" v-model="form.tel"  :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]"/>
             </div>
             <div class="password">
               {{$t('signup.password')}}
-              <input type="password" v-model="form.password" />
+              <input type="password" v-model="form.password"  :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]"/>
             </div>
             <div class="password">
               {{$t('signup.confirm')}}
-              <input type="password" v-model="form.surePassword" />
+              <input type="password" v-model="form.surePassword"  :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]"/>
             </div>
             <div class="sureCode">
               <div>{{$t('signup.verify')}}</div>
               <div>
-                <input type="text" v-model="form.sureCode" />
+                <input type="text" v-model="form.sureCode"  :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]"/>
               </div>
               <div>
                 <div style="padding: 10px;" class="sure" @click="sendCode">{{$t('signup.code')}}</div>
@@ -88,7 +90,7 @@
             </div>
             <div class="password">
               {{$t('signup.invitation')}}
-              <input type="text" v-model="form.invitationCode" />
+              <input type="text" v-model="form.invitationCode"  :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]"/>
             </div>
           </div>
           <!-- 用户协议 -->
@@ -111,20 +113,20 @@
           <div class="form">
             <div class="acount">
               {{$t('signup.email')}}
-              <input type="text" v-model="form.email" />
+              <input type="text" v-model="form.email"  :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]"/>
             </div>
             <div class="password">
               {{$t('signup.password')}}
-              <input type="password" v-model="form.password" />
+              <input type="password" v-model="form.password"  :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]"/>
             </div>
             <div class="password">
               {{$t('signup.confirm')}}
-              <input type="password" v-model="form.surePassword" />
+              <input type="password" v-model="form.surePassword"  :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]"/>
             </div>
             <div class="sureCode" style="margin-top:10px;">
               <div>{{$t('signup.verify')}}</div>
               <div>
-                <input type="text" v-model="form.phone_code" />
+                <input type="text" v-model="form.phone_code"  :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]"/>
               </div>
               <div>
                 <div class="sure" style="padding: 10px;" @click="sendCodeMail">{{$t('signup.code')}}</div>
@@ -132,7 +134,7 @@
             </div>
             <div class="password">
               {{$t('signup.invitation')}}
-              <input type="password" v-model="form.invitationCode" />
+              <input type="password" v-model="form.invitationCode"  :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]"/>
             </div>
           </div>
           <!-- 用户协议 -->
@@ -141,10 +143,12 @@
             <p @click="navToAgreement()">{{$t('signup.service')}}</p>
           </div>
           <!-- 最终注册 -->
-          <div class="finish">
+          <div class="finish"
+           :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
             <div
               :class="{'bg-blue': isChoosed, 'submit': true}"
               @click="submitMail"
+              
             >{{$t('signup.signup')}}</div>
           </div>
         </van-tab>
@@ -190,7 +194,7 @@ export default {
     if (countryDatas) {
       this.areaDatas = countryDatas;
     } else {
-      const { data: res } = await this.axios.get("/user/smsCountry");
+      const { data: res } = await this.axios.get("https://hoidex.com/api/user/smsCountry");
       localStorage.setItem('countryDatas', JSON.stringify(res.data))
       this.areaDatas = res.data;
     }
@@ -308,9 +312,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.container {
-  background: rgb(29, 38, 53);
-}
 .acount {
   position: relative;
   .fade-enter-active,
@@ -322,7 +323,6 @@ export default {
   }
   section {
     position: absolute;
-    background: rgb(29, 38, 53);
     width: 100%;
     padding: 30px;
     box-sizing: border-box;
@@ -385,7 +385,6 @@ export default {
     }
     input {
       margin: 0 30px;
-      background: rgb(29, 38, 53);
       border: none;
       outline: none;
     }
@@ -449,7 +448,6 @@ export default {
     width: 100%;
     box-sizing: border-box;
     padding: 50px 10px;
-    background: rgb(29, 38, 53);
     display: flex;
     justify-content: center;
     align-items: center;

@@ -226,5 +226,45 @@ module.exports = {
             'Fifth',
             'For issues not covered by this statement, please refer to relevant laws and administrative regulations of the People\'s Republic of China. When this statement conflicts with relevant laws and administrative regulations of the People\'s Republic of China, the relevant laws and administrative regulations of the People\'s Republic of China shall prevail.'
         ]
+    },
+    wallet: {
+        wallet: 'Wallet assets',
+        total: 'Total assets equivalent(BTC)',
+        type: 'Type',
+        available: 'Available',
+        frozen: 'Frozen',
+        valuation: 'Valuate',
+        operate: 'Operate',
+        recharge: 'Rechange',
+        withdrawal: 'Withdrawal',
+        transaction: 'Transactions',
+        
+        warning: 'Kind prompt',
+        address: 'Recharge address',
+        amount: 'Purchase number',
+        buy: 'Buy now',
+        record: 'Recharge record',
+        
+        assetRecords: 'Asset records',
+        others: 'Others',
+        time: 'time',
+        money: 'Amount',
+        addr: 'Address',
+        process: 'Progress',
+        
+        coinaddress: 'Coin address',
+        Enterquantity: 'Enter quantity',
+        Allcoins: 'All coins',
+        Availablequantity: 'Available quantity',
+        Submitimmediately: 'Submit immediately',
+        Manageaccount: 'Manage account',
+        
+        addressNote: 'Corresponding name USDT/BTC/ETH',
+        Addnow: 'Add now',
+        Addresslist: 'Address list',
+        Note: 'Note',
+        delete: 'Delete',
+        copy: 'Copy',
+        moneySymbol: '$'
     }
 }

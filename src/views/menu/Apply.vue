@@ -1,5 +1,5 @@
 <template>
-  <div class="apply">
+  <div class="apply" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
     <h2>{{$t('apply.title')}}</h2>
     
     <div class="form">
@@ -9,7 +9,7 @@
           <i></i>{{$t('apply.itemone')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -18,7 +18,7 @@
           <i></i>{{$t('apply.itemtwo')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -27,7 +27,7 @@
           <i></i>{{$t('apply.itemthree')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -36,7 +36,7 @@
           <i></i>{{$t('apply.itemfour')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -45,7 +45,7 @@
           <i></i>{{$t('apply.itemfive')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -54,7 +54,7 @@
           <i></i>{{$t('apply.itemsix')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -63,7 +63,7 @@
           <i></i>{{$t('apply.itemseven')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -72,7 +72,7 @@
           <i></i>{{$t('apply.itemeight')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -81,7 +81,7 @@
           <i></i>{{$t('apply.itemnine')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -99,7 +99,7 @@
           <i></i>{{$t('apply.itemeleven')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -108,7 +108,7 @@
           <i></i>{{$t('apply.itemtewlve')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -117,7 +117,7 @@
           <i></i>{{$t('apply.itemthirteen')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -126,7 +126,7 @@
           <i></i>{{$t('apply.itemfourteen')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -135,7 +135,7 @@
           <i></i>{{$t('apply.itemfiveteen')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -144,7 +144,7 @@
           <i></i>{{$t('apply.itemsixteen')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -153,7 +153,7 @@
           <i></i>{{$t('apply.itemseventeen')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -162,7 +162,7 @@
           <i></i>{{$t('apply.itemeighteen')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -171,7 +171,7 @@
           <i></i>{{$t('apply.itemnineteen')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -180,7 +180,7 @@
           <i></i>{{$t('apply.itemtwenty')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -189,7 +189,7 @@
           <i></i>{{$t('apply.itemtwentyone')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -198,7 +198,7 @@
           <i></i>{{$t('apply.itemtwentytwo')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -207,7 +207,7 @@
           <i></i>{{$t('apply.itemtwentythree')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -216,7 +216,7 @@
           <i></i>{{$t('apply.itemtwentyfour')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -225,7 +225,7 @@
           <i></i>{{$t('apply.itemtwentyfive')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -234,7 +234,7 @@
           <i></i>{{$t('apply.itemtwentysix')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -243,7 +243,7 @@
           <i></i>{{$t('apply.itemtwentyseven')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -252,7 +252,7 @@
           <i></i>{{$t('apply.itemtwentyeight')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -261,7 +261,7 @@
           <i></i>{{$t('apply.itemtwentynine')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -270,7 +270,7 @@
           <i></i>{{$t('apply.itemthirty')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -279,7 +279,7 @@
           <i></i>{{$t('apply.itemthirtyone')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -288,7 +288,7 @@
           <i></i>{{$t('apply.itemthirtytwo')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
 
@@ -305,7 +305,7 @@
           <i></i>{{$t('apply.itemthirtyfour')}}
         </p>
         <div class="inp">
-          <input type="text" :placeholder="$t('apply.fillout')" />
+          <input type="text" :placeholder="$t('apply.fillout')" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"  />
         </div>
       </div>
     </div>
@@ -318,17 +318,17 @@
         <div>
           <input type="checkbox" />
         </div>
-        <div>{{$t('apply.learned')}}</div>
+        <div :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$t('apply.learned')}}</div>
       </div>
       <div>
         <div>
           <input type="checkbox" />
         </div>
-        <div>{{$t('apply.submitagain')}}</div>
+        <div :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$t('apply.submitagain')}}</div>
       </div>
     </div>
     <div class="submit">
-      <div class="btn">{{$t('apply.submitnow')}}</div>
+      <div class="btn" :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$t('apply.submitnow')}}</div>
     </div>
   </div>
 </template>

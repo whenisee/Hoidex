@@ -28,12 +28,12 @@
     <!-- 信息内容 -->
     <div class="data_content">
       <div class="item" v-for="item of datas" :key="item.id" @click="handleNavTo(item.market, item.symbol)">
-        <div>
+        <div :style="[{'color':!$store.state.mode?'#fff':'#000'}]">
           <i class="iconfont icon-shoucang"></i>
           {{item.market}}/{{item.symbol | handleUpper}}
         </div>
         <div>
-          <p>{{item.open}}</p>
+          <p :style="[{'color':!$store.state.mode?'#fff':'#000'}]">{{item.open}}</p>
           <p class="second_s">≈ ￥ {{item.open | handleMoney}}</p>
         </div>
         <div>
@@ -61,7 +61,7 @@ export default {
     handleNavTo(market, symbol) {
       var str = market + "/" + symbol;
       this.$store.commit('addMarket', str)
-      this.$router.push({path: '/DASH_BTC/jy', query: { name: market }})
+      this.$router.push({path: '/DASH_BTC/jy'})
     },
 
     // 条件排序--市场
@@ -123,7 +123,6 @@ export default {
 
 <style lang="less" scoped>
 .content {
-  background: rgb(26,39,60);
   .head_class {
     display: flex;
     padding: 10px 20px;
@@ -133,7 +132,7 @@ export default {
       align-items: center;
     }
     .show {
-      color: #fff;
+      color: red;
     }
     .sort {
       display: flex;

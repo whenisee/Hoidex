@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <!-- 头部通知 -->
-    <div class="info">
+    <div class="info" :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">
       <p>{{$t('message.info[0]')}}</p>
       <i>/</i>
       <p>{{$t('message.info[1]')}}</p>
@@ -17,22 +17,30 @@
 
     <!-- 数据列表、滚动 -->
     <div class="datas flex">
-      <van-loading
-        size="24px"
-        vertical
-        v-if="!show"
-        style="width: 100%;padding: 20px;"
-      >{{$t('message.loading')}}</van-loading>
-      <div class="container" v-if="show">
+      <div v-if="!show" class="loading">
+        <van-loading
+          size="24px"
+          vertical
+          style="[{'width': '100%'},{'padding': '20px'}, {'background': $store.state.mode? '#fff' : '#1d2635'}]"
+        >{{$t('message.loading')}}</van-loading>
+      </div>
+      <div
+        class="container"
+        v-if="show"
+        :style="[{'background':$store.state.mode?'#f7efef':'#191919'}]"
+      >
         <!-- 数据列表循环 -->
         <div
           class="item"
           v-for="(item, index) of datas"
           :key="index"
           @click="handleNavTo(item.market, item.symbol)"
+          :style="[{'background': $store.state.mode? '#fff' : '#1d2635'}]"
         >
           <div>
-            <span>{{item.market}}/{{item.symbol | handleUpper}}</span>
+            <span
+              :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]"
+            >{{item.market}}/{{item.symbol | handleUpper}}</span>
             <span :class="item.changepercent>0? 'green':'red'">{{item.changepercent | handleNum}}%</span>
           </div>
           <p>{{item.open}}</p>
@@ -47,14 +55,21 @@
         <div @click="handleTab" id="0">
           <p
             :class="[{line:active==0? true : false},{white:active==0? true : false}]"
+            :style="[{'color':!$store.state.mode?'#aaa':'#000'}]"
           >{{$t('message.optional')}}</p>
         </div>
         <!-- Tab02 -->
         <div @click="handleTab" id="1">
-          <p :class="[{line:active==1? true : false},{white:active==1? true : false}]">USDT</p>
+          <p
+            :class="[{line:active==1? true : false},{white:active==1? true : false}]"
+            :style="[{'color':!$store.state.mode?'#aaa':'#000'}]"
+          >USDT</p>
         </div>
         <div @click="handleTab" id="2">
-          <p :class="[{line:active==2? true : false},{white:active==2? true : false}]">BTC</p>
+          <p
+            :class="[{line:active==2? true : false},{white:active==2? true : false}]"
+            :style="[{'color':!$store.state.mode?'#aaa':'#000'}]"
+          >BTC</p>
         </div>
       </div>
 
@@ -173,11 +188,11 @@ export default {
       if (this.ws02 != null) {
         this.ws02.close();
       }
-      if(this.t01 != null) {
-        clearTimeout(this.t01)
+      if (this.t01 != null) {
+        clearTimeout(this.t01);
       }
-      if(this.t02 != null) {
-        clearTimeout(this.t02)
+      if (this.t02 != null) {
+        clearTimeout(this.t02);
       }
       this.changeTabs();
     },
@@ -232,80 +247,89 @@ export default {
     handleNavTo(market, symbol) {
       var str = market + "/" + symbol;
       this.$store.commit("addMarket", str);
-      this.$router.push({ path: "/DASH_BTC/jy", query: { name: market } });
+      this.$router.push({ path: "/DASH_BTC/jy" });
     },
 
     // 改变tabs建立websocket
     changeTabs() {
-      console.log("changeTabs")
+      var usdt_datas = this.$store.state.usdt_datas.length;
+      var btc_datas = this.$store.state.btc_datas.length;
       clearTimeout(this.timer01);
       clearTimeout(this.timer02);
       var that = this;
       let order = that.order;
       let sort = that.sort;
       if (this.active == "1") {
-        var timer01 = setTimeout(() => {
-          this.ws01 = new WebSocket("WSS://exchange.gd-juzheng.com:2345");
-          let param = {
-            type: "index",
-            symbol: "USDT",
-            order,
-            sort,
-            market: "",
-            think_var: "en"
-          };
-          that.show01 = true;
-          // 发送的消息
-          let sendMessage = function(socket, param) {
-            if (that.ws01.readyState === 1) {
-              socket.send(JSON.stringify(param));
-            }
-          };
+        if (usdt_datas) {
+          this.datas_list01 = this.$store.state.usdt_datas;
+        } else {
+          var timer01 = setTimeout(() => {
+            this.ws01 = new WebSocket("WSS://exchange.gd-juzheng.com:2345");
+            let param = {
+              type: "index",
+              symbol: "USDT",
+              order,
+              sort,
+              market: "",
+              think_var: "en"
+            };
+            that.show01 = true;
+            // 发送的消息
+            let sendMessage = function(socket, param) {
+              if (that.ws01.readyState === 1) {
+                socket.send(JSON.stringify(param));
+              }
+            };
 
-          that.ws01.onopen = function() {
-            sendMessage(that.ws01, param);
-          };
-          that.ws01.onmessage = function(e) {
-            that.t01 = setTimeout(() => {
+            that.ws01.onopen = function() {
               sendMessage(that.ws01, param);
-            }, 1000);
-            var res = JSON.parse(e.data);
-            that.datas_list01 = res;
-            that.$store.commit("getSocket", { datas: res, type: "usdt" });
-          };
-        }, 50);
-        that.timer01 = timer01;
+            };
+            that.ws01.onmessage = function(e) {
+              that.t01 = setTimeout(() => {
+                sendMessage(that.ws01, param);
+              }, 1000);
+              var res = JSON.parse(e.data);
+              that.datas_list01 = res;
+              that.$store.commit("getSocket", { datas: res, type: "usdt" });
+            };
+          }, 500);
+          that.timer01 = timer01;
+        }
       }
       if (this.active == "2") {
-        var timer02 = setTimeout(() => {
-          that.show02 = true;
-          this.ws02 = new WebSocket("WSS://exchange.gd-juzheng.com:2345");
-          let param = {
-            type: "index",
-            symbol: "BTC",
-            order,
-            sort,
-            market: "",
-            think_var: "en"
-          };
-          // 发送的消息
-          let sendMessage = function(socket, param) {
-            if (that.ws02.readyState === 1) {
-              socket.send(JSON.stringify(param));
-            }
-          };
-          that.ws02.onopen = function() {
-            sendMessage(that.ws02, param);
-          };
-          that.ws02.onmessage = function(e) {
-            that.t02 = setTimeout(() => {
+        if (btc_datas) {
+          this.datas_list02 = this.$store.state.btc_datas;
+        } else {
+          var timer02 = setTimeout(() => {
+            that.show02 = true;
+            this.ws02 = new WebSocket("WSS://exchange.gd-juzheng.com:2345");
+            let param = {
+              type: "index",
+              symbol: "BTC",
+              order,
+              sort,
+              market: "",
+              think_var: "en"
+            };
+            // 发送的消息
+            let sendMessage = function(socket, param) {
+              if (that.ws02.readyState === 1) {
+                socket.send(JSON.stringify(param));
+              }
+            };
+            that.ws02.onopen = function() {
               sendMessage(that.ws02, param);
-            }, 1000);
-            var res = JSON.parse(e.data);
-            that.datas_list02 = res;
-            that.$store.commit("getSocket", { datas: res, type: "btc" });
-          };
-        }, 50);
+            };
+            that.ws02.onmessage = function(e) {
+              that.t02 = setTimeout(() => {
+                sendMessage(that.ws02, param);
+              }, 1000);
+              var res = JSON.parse(e.data);
+              that.datas_list02 = res;
+              that.$store.commit("getSocket", { datas: res, type: "btc" });
+            };
+          }, 500);
+        }
         that.timer02 = timer02;
       }
     }
@@ -341,12 +365,10 @@ export default {
   width: 100%;
   padding: 15px 0;
   display: flex;
-  color: rgba(237, 244, 248, 1);
   box-sizing: border-box;
   i {
     line-height: 50px;
     margin: 0 20px 0 0;
-    color: #ccc;
     flex: 0.2;
     display: flex;
     justify-content: center;
@@ -384,10 +406,20 @@ export default {
 .datas {
   overflow-x: auto;
   overflow-y: hidden;
-  background: rgb(22, 29, 43);
   height: 200px;
   &::-webkit-scrollbar {
     display: none;
+  }
+  .loading {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    div {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
   }
   .container {
     display: flex;
@@ -395,7 +427,6 @@ export default {
   .item {
     color: rgb(130, 142, 161);
     padding: 20px;
-    background: rgb(26, 37, 55);
     box-sizing: border-box;
     margin: 10px;
     .green {
@@ -407,7 +438,6 @@ export default {
     p {
       padding: 5px 0;
       &:nth-child(2) {
-        color: #fff;
         font-size: 26px;
       }
     }

@@ -1,6 +1,6 @@
 <template>
-  <div class="cj">
-    <div class="title">{{$t('dash.recentTrades')}}</div>
+  <div class="cj" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
+    <div class="title" :style="[{'background':$store.state.mode?'#f7efef':'#2e2e2e'},{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$t('dash.recentTrades')}}</div>
     <section>
       <div class="attribute">
         <p>{{$t('dash.price')}}(BTC)</p>
@@ -8,7 +8,7 @@
         <p>{{$t('dash.time')}}</p>
       </div>
       <div class="content">
-        <div class="item" v-for="(item, index) of $store.state.marketDepth" :key="index">
+        <div class="item" v-for="(item, index) of $parent.HistoryTrade" :key="index">
           <p :style="{color: item.direction=='buy'?'green':'red'}">{{item.price}}</p>
           <p>{{item.amount | handleDecimal(4)}}</p>
           <p>{{item.ts}}</p>
@@ -22,11 +22,14 @@
 export default {
   data() {
     return {
-      datas: []
-    };
+    }
   },
-  methods: {},
-  mounted() {}
+  methods: {
+  },
+  created() {
+  },
+  destroyed() {
+  }
 };
 </script>
 

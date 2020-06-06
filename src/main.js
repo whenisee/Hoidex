@@ -19,13 +19,19 @@ Vue.use(vant.Uploader)
 Vue.use(vant.Loading)
 Vue.use(vant.Notify)
 Vue.use(vant.Switch)
+Vue.use(vant.Dialog )
 
-axios.defaults.baseURL = 'https://hoidex.com/api'
 Vue.prototype.axios = axios
 axios.interceptors.request.use(config => {
-  config.baseURL = "https://hoidex.com/api"
   return config
+},
+error => {
+  return Promise.error(error)
 })
+
+// 不支持CDN？？
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
 
 Vue.use(VueResource);
 Vue.http.options.emulateJSON = true

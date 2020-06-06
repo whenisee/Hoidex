@@ -81,7 +81,7 @@ module.exports = {
         verification: '认证',
         email: '邮箱',
         phone: '手机号',
-        goole: '谷歌验证码',
+        google: '谷歌验证码',
         connect: '绑定',
         base: '平台币作为手续费',
         invitation: '我的邀请码',
@@ -226,5 +226,45 @@ module.exports = {
                 '第五条',
                 '本声明未涉及的问题参见中华人民共和国相关法律、行政法规，当本声明与中华人民共和国相关法律、行政法规冲突时，以中华人民共和国相关法律、行政法规为准。'
             ]
+    },
+    wallet: {
+        wallet: '钱包资产',
+        total: '总资产折合(BTC)',
+        type: '币种',
+        available: '可用',
+        frozen: '冻结',
+        valuation: 'BTC估值',
+        operate: '操作',
+        recharge: '充币',
+        withdrawal: '提币',
+        transaction: '交易',
+        
+        warning: '温馨提示',
+        address: '充值地址',
+        amount: '购买数量',
+        buy: '立即购买',
+        record: '充币记录',
+        
+        assetRecords: '资产记录',
+        others: '其他',
+        time: '时间',
+        money: '数量',
+        addr: '地址',
+        process: '进度',
+        
+        coinaddress: '提币地址',
+        Enterquantity: '输入数量',
+        Allcoins: '全部提现',
+        Availablequantity: '可提数量',
+        Submitimmediately: '立即提币',
+        Manageaccount: '管理提币地址',
+        
+        addressNote: '地址备注',
+        Addnow: '立即添加',
+        Addresslist: '地址列表',
+        Note: '备注',
+        delete: '删除',
+        copy: '复制地址',
+        moneySymbol: '￥'
     }
 }

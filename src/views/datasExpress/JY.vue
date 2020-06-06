@@ -1,13 +1,13 @@
 <template>
   <div class="jy" @click="closeMenu">
     <!-- （买入/卖出） -->
-    <div class="tabs">
-      <div :class="active==0?'bottom_line buy' : 'buy'" @click="handleBuy()">{{$t('dash.buy')}}</div>
-      <div :class="active==1?'bottom_line sell' : 'sell'" @click="handleSell()">{{$t('dash.sell')}}</div>
+    <div class="tabs" :style="[{'background':$store.state.mode?'#fff':'#2e2e2e'}]">
+      <div :class="active==0?'bottom_line buy' : 'buy'" @click="handleBuy()" :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$t('dash.buy')}}</div>
+      <div :class="active==1?'bottom_line sell' : 'sell'" @click="handleSell()" :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$t('dash.sell')}}</div>
     </div>
 
     <!-- 分类 -->
-    <div class="attribute">
+    <div class="attribute" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
       <div>
         <span id="type" @click="openMenu">{{current_type}}</span>
         <i id="type_icon" class="iconfont icon-xialasanjiaoxingx"></i>
@@ -28,14 +28,14 @@
     </div>
 
     <!-- 数据 -->
-    <div class="datas">
+    <div class="datas" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
       <div class="datas_left">
         <div class="flex border flex-between" v-if="current_choose==0">
           <div>
             <!-- 价格 -->
-            <input v-model="amount_first" type="number" min="0" />
+            <input v-model="amount_first" type="number" min="0" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"/>
           </div>
-          <div class="center">{{$store.state.symbol | handleTrans}}</div>
+          <div class="center" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$store.state.symbol | handleTrans}}</div>
         </div>
         <div class="border" v-if="current_choose==1">
           <p>{{$t('dash.price')}}</p>
@@ -44,23 +44,24 @@
         <div
           class="padding bg-gray margin-b"
           v-show="current_choose==0"
+          :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"
         >≈ ￥{{amount_first | handleMoney}}</div>
         <div class="flex border flex-between">
           <!-- 数量 -->
-          <input v-model="amount_second" />
+          <input v-model="amount_second" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]"/>
           <div>{{$store.state.market}}</div>
         </div>
         <div>
           <div class="flex flex-between padding-tb">
-            <div class="border-s">25%</div>
-            <div class="border-s">50%</div>
-            <div class="border-s">75%</div>
-            <div class="border-s">100%</div>
+            <div class="border-s" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]">25%</div>
+            <div class="border-s" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]">50%</div>
+            <div class="border-s" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]">75%</div>
+            <div class="border-s" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]">100%</div>
           </div>
         </div>
         <div>
-          <p>{{$t('dash.available')}}：0 {{usdt | handleTrans}}</p>
-          <p>{{$t('dash.total')}}：--</p>
+          <p :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$t('dash.available')}}：0 {{usdt | handleTrans}}</p>
+          <p :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$t('dash.total')}}：--</p>
         </div>
       </div>
       <div class="datas_right">
@@ -76,10 +77,8 @@
         </div>
         <!-- 美金人民币兑换 -->
         <div class="padding-tb padding f-26">
-          {{$store.state.marketinfo.close}}
-          <span
-            class="f-gray"
-          >≈￥{{$store.state.marketinfo.close | handleMoney}}</span>
+          {{datas.marketInfo.close}}
+          <span class="f-gray">≈￥{{datas.marketInfo.close | handleMoney}}</span>
         </div>
         <!-- 买入 -->
         <div
@@ -95,7 +94,7 @@
     </div>
 
     <!-- 登录 -->
-    <div class="login padding-lr flex flex-between">
+    <div class="login padding-lr flex flex-between" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
       <div>
         <van-button
           v-if="!$store.state.online"
@@ -108,7 +107,7 @@
           type="primary"
           @click="$router.push('/DASH_BTC/jy')"
           style="padding: 20px 40px;line-height:0px;font-size:15px;"
-        >{{$t('dash.buy')}}{{$store.state.marketinfo.market}}</van-button>
+        >{{$t('dash.buy')}}{{datas.marketInfo.market}}</van-button>
       </div>
       <div class="center f-gray depth">
         <div class="depth_menu" v-if="depthShow">
@@ -121,7 +120,7 @@
           >{{item}}</p>
         </div>
         <span id="depth" @click="openDepth">{{current_depthType}}</span>
-        <i id="depth_icon" class="iconfont icon-xialasanjiaoxingx"></i>
+        <i id="depth_icon" class="iconfont icon-xialasanjiaoxingx" :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]"></i>
       </div>
     </div>
   </div>
@@ -167,17 +166,7 @@ export default {
         history_buy: [],
         history_sell: [],
         marketList: []
-      },
-      market_param: {
-        type: "c2c",
-        symbol: "usdt",
-        order: "weigh",
-        sort: "desc",
-        market: "btc",
-        think_var: "en"
-      },
-      precision: 2,
-      ws: null
+      }
     };
   },
   methods: {
@@ -185,7 +174,7 @@ export default {
     handleBuy() {
       if (this.active !== 0) {
         this.active = 0;
-        this.usdt = this.market_param.symbol;
+        this.usdt = this.$store.state.symbol
       }
     },
 
@@ -193,7 +182,7 @@ export default {
     handleSell() {
       if (this.active !== 1) {
         this.active = 1;
-        this.usdt = this.$store.state.marketinfo.market;
+        this.usdt = this.$store.state.market
       }
     },
 
@@ -247,108 +236,45 @@ export default {
 
     // 数据初始化
     init() {
-      if ("WebSocket" in window) {
-        var ws = new WebSocket("WSS://exchange.gd-juzheng.com:2345/market");
-        this.ws = ws;
+      let that = this;
+      var res = this.$parent.origin;
+      that.rectangleBuy_width = [];
+      that.rectangleSell_width = [];
+      that.datas = {
+        depth: {
+          sell: [],
+          buy: []
+        },
+        marketInfo: {},
+        history_buy: [],
+        history_sell: [],
+        marketList: []
+      };
+      that.datas.depth = res.depth;
+      that.datas.marketInfo = res.marketInfo;
+      that.datas.marketList = res.marketList;
+      that.datas.history_buy = res.HistoryTrade.filter(
+        item => item.direction == "buy"
+      ).slice(0, 5);
+      that.datas.history_sell = res.HistoryTrade.filter(
+        item => item.direction == "sell"
+      ).slice(0, 5);
+      for (let i = 0; i < 5; i++) {
+        var buy_price =
+          (that.datas.depth.buy[i].price - that.datas.history_buy[i].price) *
+          20;
+        that.rectangleBuy_width.push(buy_price);
+        var sell_price =
+          (that.datas.depth.sell[i].price - that.datas.history_sell[i].price) *
+          20;
+        that.rectangleSell_width.push(sell_price);
       }
-      var params = {
-        type: this.market_param.type,
-        market_list: this.market_param,
-        market_symbol: this.market_param.market + this.market_param.symbol,
-        precision: this.precision
-      };
-      var that = this;
-      ws.onopen = function() {
-        if (that.ws.readyState == 1) {
-          ws.send(JSON.stringify(params));
-        }
-      };
-      ws.onmessage = function(e) {
-        setTimeout(() => {
-          if (that.ws.readyState == 1) {
-            ws.send(JSON.stringify(params));
-          }
-        }, 1000);
-        var res = JSON.parse(e.data);
-        that.rectangleBuy_width = [];
-        that.rectangleSell_width = [];
-        that.datas = {
-          depth: {
-            sell: [],
-            buy: []
-          },
-          marketInfo: {},
-          history_buy: [],
-          history_sell: [],
-          marketList: []
-        };
-        that.datas.depth = res.depth;
-        that.datas.marketInfo = res.marketInfo;
-        that.datas.marketList = res.marketList;
-        that.datas.history_buy = res.HistoryTrade.filter(
-          item => item.direction == "buy"
-        ).slice(0, 5);
-        that.datas.history_sell = res.HistoryTrade.filter(
-          item => item.direction == "sell"
-        ).slice(0, 5);
-        for (let i = 0; i < 5; i++) {
-          if (!that.datas.depth.buy[i]) {
-            console.log("0000");
-            that.datas.depth.buy[i].price = 0;
-          }
-          if (!that.datas.history_buy[i]) {
-            console.log("1111");
-            that.datas.history_buy[i].price = 0;
-          }
-          if (!that.datas.depth.sell[i]) {
-            console.log("2222");
-            that.datas.depth.sell[i].price = 0;
-          }
-          if (!that.datas.history_sell[i]) {
-            console.log("3333");
-            that.datas.history_sell[i].price = 0;
-          }
-          var buy_price =
-            (that.datas.depth.buy[i].price - that.datas.history_buy[i].price) *
-            20;
-          if (buy_price < 0) {
-            buy_price = 0;
-          }
-          that.rectangleBuy_width.push(buy_price);
-          var sell_price =
-            (that.datas.depth.sell[i].price -
-              that.datas.history_sell[i].price) *
-            20;
-          if (sell_price < 0) {
-            sell_price = 0;
-          }
-          that.rectangleSell_width.push(sell_price);
-          that.$store.commit("sendMarketInfo", res.marketInfo);
-          that.$store.commit("sendMarketDepth", res.HistoryTrade);
-        }
-      };
-      ws.onerror = function() {
-        that.init();
-      };
     }
   },
-  created() {
-    this.market_param.market = this.$store.state.market;
-    this.market_param.symbol = this.$store.state.symbol;
-    if (this.ws!=null) {
-      console.log('ws init')
-      this.ws.close();
-    }
-    this.init();
-  },
-  destroyed() {
-    this.ws.close()
+  mounted() {
   },
   watch: {
-    "$store.state.market": function() {
-      console.log('ws close')
-      this.market_param.market = this.$store.state.market;
-      this.ws.close();
+    "$parent.origin": function() {
       this.init();
     }
   }

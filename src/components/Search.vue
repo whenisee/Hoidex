@@ -2,7 +2,7 @@
   <div class="container_search">
     <div class="search">
       <i class="iconfont icon-sousuo1-copy"></i>
-      <input type="text" :placeholder="$t('message.searchCoin')"/>
+      <input type="text" :placeholder="$t('message.searchCoin')" :style="[{'background': $store.state.mode? '#fff' : '#1d2635'}]"/>
     </div>
   </div>
 </template>
@@ -33,7 +33,6 @@ export default {
   input {
     margin-left: 20px;
     width: 90%;
-    background: rgb(29,38,53);
     outline: none;
     border: none;
   }

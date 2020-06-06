@@ -45,7 +45,6 @@ class socket {
     }
     onClose(e){ //TODO: websocket关闭
         console.log('关闭websocket链接....');
-        console.log(e);
         this.connState = 0;
         if (this.connState) {
             this.onReceiver({ Event: 'close' });

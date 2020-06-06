@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="login" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
     <!-- 头部欢迎 -->
     <div class="welcome">
       <p>{{$t('login.welcome[0]')}}</p>
@@ -13,11 +13,11 @@
     <div class="form">
       <div class="acount">
         {{$t('login.account')}}
-        <input type="text" v-model="account" />
+        <input type="text" v-model="account"  :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]"/>
       </div>
       <div class="password">
         {{$t('login.password')}}
-        <input type="password" v-model="password" />
+        <input type="password" v-model="password"  :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]"/>
       </div>
     </div>
 
@@ -26,7 +26,7 @@
 
     <!-- 最终登录 -->
     <div class="finish">
-      <div class="submit" @click="login">{{$t('login.login')}}</div>
+      <div :class="['submit', isValidate? 'bg-blue': '']" @click="login">{{$t('login.login')}}</div>
     </div>
   </div>
 </template>
@@ -57,25 +57,38 @@ export default {
       })
       // 设置Token值
       if (res.code === 1) {
-        this.$notify({ type: 'success', message: '登录成功！' })
+        this.$notify({ type: 'success', message: '登录成功！', duration: 800 })
         this.$store.commit('edit', true)
         var userinfo = JSON.stringify(res.data.userinfo)
-        localStorage.setItem('token', res.data.userinfo.token)
+        // 这里缓存的token是测试值
+        // localStorage.setItem('token', res.data.userinfo.token)
+        localStorage.setItem('token', '07b09a5f-15e5-4bf3-8fe8-d414102edf28')
         localStorage.setItem('userinfo', userinfo)
+        localStorage.setItem('password', this.password)
         this.$router.back()
+      } else {
+        this.$notify({ type: 'danger', message: '登录失败！', duration: 800 })
       }
     }
-  }
+  },
+  computed: {
+    isValidate: function() {
+      if(this.account && this.password.length>=6) {
+        return true
+      }
+      return false
+    }
+  },
 };
 </script>
 <style lang="less" scoped>
+@import url('../../assets/css/common.css');
 .login {
   position: fixed;
   top: 100px;
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgb(29,38,53);
   .welcome {
     display: flex;
     box-sizing: border-box;
@@ -109,7 +122,6 @@ export default {
     padding: 30px;
     input {
       margin: 0 30px;
-      background: rgb(29,38,53);
       border: none;
       outline: none;
       width: 5rem;
