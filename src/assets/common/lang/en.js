@@ -102,7 +102,7 @@ module.exports = {
         issue: 'Issue price',
         currency: 'Application currency',
         starttime: 'Application start time',
-        launchtime: 'Expected launch time',
+        launchtime: 'Estimated on-line time',
         endtime: 'Application end time',
         apply: 'Apply now',
         cycle: 'Apply cycle',

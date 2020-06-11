@@ -67,13 +67,13 @@
 }
 
 .border {
-    border: 1px solid rgb(41, 52, 72);
+    border: 1px solid #777;
     padding: 30px;
 }
 
 .border-s {
     padding: 5px;
-    border: 1px solid rgb(41, 52, 72);
+    border: 1px solid #777;
 }
 
 .margin-b {

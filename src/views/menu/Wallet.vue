@@ -4,7 +4,7 @@
       <p>{{$t('wallet.total')}}</p>
       <p>{{to_btc}} ≈ {{$t('wallet.moneySymbol')}} {{to_fabi}}</p>
     </article>
-    <h2 class="title">{{$t('wallet.wallet')}}</h2>
+    <h2 class="title"  :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$t('wallet.wallet')}}</h2>
     <div class="table">
       <!-- 表格头 -->
       <ul class="thead flex">
@@ -72,7 +72,7 @@ export default {
       let token = localStorage.getItem("token");
       const {data: res} = await this.axios
         .get(
-          "https://exchange.gd-juzheng.com/api/Wallet/index",{
+          "/Wallet/index",{
             params: {
               'verification': localStorage.getItem('token')
             }

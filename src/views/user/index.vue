@@ -33,7 +33,7 @@
       </div>
 
       <!-- tabs内容区 -->
-      <div class="tab1_content" v-if="active==0">
+      <div class="tab1_content" v-if="active==0" >
         <!-- 1 -->
         <ul :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">
           <li>
@@ -81,7 +81,7 @@
         <!-- 5 -->
         <ul :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">
           <li>
-            <i class="iconfont iconyouxiang"></i>
+            <i class="iconfont iconyouxiang"  :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]"></i>
           </li>
           <li>
             <p>{{$t('user.google')}}</p>
@@ -92,7 +92,7 @@
         <!-- 6 -->
         <ul :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">
           <li>
-            <i class="iconfont iconyouxiang"></i>
+            <i class="iconfont iconyouxiang"  :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]"></i>
           </li>
           <li>
             <p style="flex: 4">{{$t('user.base')}}</p>
@@ -104,7 +104,7 @@
         <!-- 7 -->
         <ul :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">
           <li>
-            <i class="iconfont iconyouxiang"></i>
+            <i class="iconfont iconyouxiang"  :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]"></i>
           </li>
           <li>
             <p>{{$t('user.invitation')}}</p>
@@ -118,7 +118,7 @@
         <div class="head">
           <div class="mode" @click="handleShow">
             <span id="mode">{{current}}</span>
-            <i class="iconfont iconjiantouarrow486" id="mode_icon"></i>
+            <i class="iconfont iconjiantouarrow486" id="mode_icon" :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]"></i>
             <!-- 菜单 -->
             <div class="menu" v-if="menuShow">
               <p
@@ -131,23 +131,23 @@
           </div>
         </div>
         <!-- 登录记录 -->
-        <div class="desc" v-if="loginInfo == 'record'">
-          <ul>
+        <div class="desc" v-if="loginInfo == 'record'" >
+          <ul >
             <li class="flex">
               <p>{{$t('user.time')}}</p>
-              <p>{{userinfo.expires_in | handleFormat}}</p>
+              <p :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{userinfo.expires_in | handleFormat}}</p>
             </li>
             <li class="flex">
               <p>{{$t('user.type')}}</p>
-              <p>2020-05-12 11:55:40</p>
+              <p :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">2020-05-12 11:55:40</p>
             </li>
             <li class="flex">
               <p>{{$t('user.ip')}}</p>
-              <p>2020-05-12 11:55:40</p>
+              <p :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">2020-05-12 11:55:40</p>
             </li>
             <li class="flex">
               <p>{{$t('user.status')}}</p>
-              <p>2020-05-12 11:55:40</p>
+              <p :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">2020-05-12 11:55:40</p>
             </li>
           </ul>
         </div>

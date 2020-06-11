@@ -102,7 +102,7 @@ module.exports = {
         issue: '発行価格',
         currency: '発注通貨',
         starttime: '購入開始時刻',
-        launchtime: '予定上下時間',
+        launchtime: '予定オンライン時間',
         endtime: '発注終了時刻',
         apply: '今すぐ購入する',
         cycle: '購入サイクル',

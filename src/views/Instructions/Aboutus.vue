@@ -1,10 +1,10 @@
 <template>
   <div class="agreement" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
     <h2 :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$t('agreement.title[0]')}}</h2>
-    <p>{{$t('agreement.aboutustime')}}</p>
-    <article>
-      <p>{{$t('agreement.aboutus[0]')}}</p>
-      <p>{{$t('agreement.aboutus[1]')}}</p>
+    <p :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$t('agreement.aboutustime')}}</p>
+    <article :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">
+      <p :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$t('agreement.aboutus[0]')}}</p>
+      <p :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$t('agreement.aboutus[1]')}}</p>
     </article>
   </div>
 </template>

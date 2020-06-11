@@ -1,10 +1,18 @@
 <template>
   <div class="trade">
+    <!-- 加载loading -->
+    <div class="loading" v-if="!origin.rs_type">
+      <van-loading />
+    </div>
+
     <!-- 头部数据 -->
     <div class="headDatas" v-if="active">
       <div>
-        <p class="bg-white ft-large" :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{marketinfo.close}}</p>
-        <p style="width: 120%">≈ ￥{{marketinfo.close | handleMoney}}</p>
+        <p
+          class="bg-white ft-large"
+          :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]"
+        >{{marketinfo.close}}</p>
+        <p style="width: 120%" v-if="marketinfo.close">≈ ${{marketinfo.close | handleMoney}}</p>
       </div>
       <div>
         <p>{{$t('dash.change')}}</p>
@@ -14,7 +22,10 @@
       </div>
       <div>
         <p>{{$t('dash.vol')}}</p>
-        <p class="bg-white" :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{marketinfo.amount | handleDecimal(4)}} {{marketinfo.market}}</p>
+        <p
+          class="bg-white"
+          :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]"
+        >{{marketinfo.amount | handleDecimal(4)}} {{marketinfo.market}}</p>
       </div>
     </div>
 
@@ -24,7 +35,7 @@
     </div>
 
     <!-- 底部导航栏 -->
-    <div class="navBars" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
+    <div class="navBars" :style="[{'background':$store.state.mode?'#bbb':'#1d2635'}]">
       <div>
         <router-link :class="show" to="/DASH_BTC/jy">{{tabs[0]}}</router-link>
       </div>
@@ -45,14 +56,14 @@
 export default {
   data() {
     return {
-      tabs: this.$t("dash.tabs"),
+      tabs: this.$t('dash.tabs'),
       market_param: {
-        type: "c2c",
-        symbol: "usdt",
-        order: "weigh",
-        sort: "desc",
-        market: "btc",
-        think_var: "en"
+        type: 'c2c',
+        symbol: 'usdt',
+        order: 'weigh',
+        sort: 'desc',
+        market: 'btc',
+        think_var: 'en'
       },
       precision: 2,
       ws: null,
@@ -63,45 +74,50 @@ export default {
       datas: '<p>暂无数据！</p>',
       // 总数据
       origin: {}
-    };
+    }
   },
   computed: {
     // 头部数据在简介中不显示
     active: function() {
-      if (this.$route.path.slice(10, 12) == "jj") {
-        return false;
+      if (this.$route.path.slice(10, 12) == 'jj') {
+        return false
       }
-      return true;
+      return true
     },
     show: function() {
-      if (this.$route.path.slice(10, 12) == "jy") {
-        return "router-link-exact-active";
+      if (this.$route.path.slice(10, 12) == 'jy') {
+        return 'router-link-exact-active'
       }
-      return "";
+      return ''
     }
   },
   watch: {
-    "$store.state.market": function() {
-      this.market_param.market = this.$store.state.market;
-      this.ws.close();
-      this.init();
+    '$store.state.market': function() {
+      this.market_param.market = this.$store.state.market
+      this.ws.close()
+      this.init()
+    },
+    '$store.state.symbol': function() {
+      this.market_param.symbol = this.$store.state.symbol
+      this.ws.close()
+      this.init()
     }
   },
   created() {
-    this.market_param.market = this.$store.state.market;
-    this.market_param.symbol = this.$store.state.symbol;
+    this.market_param.market = this.$store.state.market
+    this.market_param.symbol = this.$store.state.symbol
     if (this.ws != null) {
-      this.ws.close();
+      this.ws.close()
     }
-    this.init();
+    this.init()
   },
   destroyed() {
-    this.ws.close();
+    this.ws.close()
   },
   methods: {
     init() {
-      if ("WebSocket" in window) {
-        this.ws = new WebSocket("WSS://hoidex.com:2345/market");
+      if ('WebSocket' in window) {
+        this.ws = new WebSocket('WSS://hoidex.com:2345/market')
         var ws = this.ws
       }
       var params = {
@@ -109,46 +125,57 @@ export default {
         market_list: this.market_param,
         market_symbol: this.market_param.market + this.market_param.symbol,
         precision: this.precision
-      };
-      var that = this;
+      }
+      var that = this
       ws.onopen = function() {
         if (that.ws.readyState == 1) {
-          ws.send(JSON.stringify(params));
+          ws.send(JSON.stringify(params))
         }
-      };
+      }
       ws.onmessage = function(e) {
         setTimeout(() => {
           if (that.ws.readyState == 1) {
-            ws.send(JSON.stringify(params));
+            ws.send(JSON.stringify(params))
           }
-        }, 1000);
-        var res = JSON.parse(e.data);
+        }, 1000)
+        var res = JSON.parse(e.data)
         that.origin = res
-        that.marketinfo = res.marketInfo;
-        that.depth = res.depth;
-        that.HistoryTrade = res.HistoryTrade;
-        let lang = sessionStorage.getItem("locale");
-        if (lang == "zh") {
-          that.datas = res.marketInfo.zh_content;
+        that.marketinfo = res.marketInfo
+        that.depth = res.depth
+        that.HistoryTrade = res.HistoryTrade
+        let lang = sessionStorage.getItem('locale')
+        if (lang == 'zh') {
+          that.datas = res.marketInfo.zh_content
         }
-        if (lang == "jp") {
-          that.datas = res.marketInfo.jp_content;
+        if (lang == 'jp') {
+          that.datas = res.marketInfo.jp_content
         }
-        if (lang == "ko") {
-          that.datas = res.marketInfo.ko_content;
+        if (lang == 'ko') {
+          that.datas = res.marketInfo.ko_content
         }
-        if (lang == "en") {
-          that.datas = res.marketInfo.en_content;
+        if (lang == 'en') {
+          that.datas = res.marketInfo.en_content
         }
-      };
+      }
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
 .trade {
+  .loading {
+    background: rgba(235, 235, 235, 0);
+    position: fixed;
+    width: 100%;
+    height: 87%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
   .headDatas {
+    min-height: 170px;
     padding: 30px 0;
     display: flex;
     box-sizing: border-box;
@@ -158,6 +185,7 @@ export default {
     div {
       padding: 0 20px;
       display: flex;
+      flex: 1;
       flex-direction: column;
       align-items: flex-end;
       .bg-white {
@@ -169,7 +197,6 @@ export default {
       }
     }
     div:nth-child(1) {
-      margin-right: 180px;
       align-items: flex-start;
     }
     p {
@@ -181,6 +208,7 @@ export default {
     color: red !important;
   }
   .navBars {
+    box-sizing: border-box;
     z-index: 2000;
     position: fixed;
     bottom: 0;

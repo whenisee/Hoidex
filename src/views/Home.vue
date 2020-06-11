@@ -1,10 +1,14 @@
 <template>
   <div class="home">
     <!-- 头部通知 -->
-    <div class="info" :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">
-      <p>{{$t('message.info[0]')}}</p>
+    <div
+      class="info"
+      :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]"
+      @click="$router.push('message')"
+    >
+      <p>{{info01}}...</p>
       <i>/</i>
-      <p>{{$t('message.info[1]')}}</p>
+      <p>{{info02}}...</p>
     </div>
     <!-- 轮播图 -->
     <div class="swiper">
@@ -27,7 +31,7 @@
       <div
         class="container"
         v-if="show"
-        :style="[{'background':$store.state.mode?'#f7efef':'#191919'}]"
+        :style="[{'background':$store.state.mode?'#ededed':'#191919'}]"
       >
         <!-- 数据列表循环 -->
         <div
@@ -43,7 +47,7 @@
             >{{item.market}}/{{item.symbol | handleUpper}}</span>
             <span :class="item.changepercent>0? 'green':'red'">{{item.changepercent | handleNum}}%</span>
           </div>
-          <p>{{item.open}}</p>
+          <p>{{item.close}}</p>
           <p>24H Vol</p>
           <p>{{item.vol}}</p>
         </div>
@@ -93,11 +97,11 @@
 </template>
 
 <script>
-import Search from "../components/Search";
-import Content from "../components/Content";
-import Nodatas from "../components/Nodatas";
+import Search from '../components/Search'
+import Content from '../components/Content'
+import Nodatas from '../components/Nodatas'
 export default {
-  name: "swiper",
+  name: 'swiper',
   components: {
     Search,
     Content,
@@ -106,13 +110,9 @@ export default {
   data() {
     return {
       // 轮播图
-      SwiperImg: [
-        require("../assets/carousel01.png"),
-        require("../assets/carousel01.png"),
-        require("../assets/carousel01.png")
-      ],
+      SwiperImg: [require('../assets/carousel01.png'), require('../assets/carousel01.png'), require('../assets/carousel01.png')],
       // tabs起始页
-      active: 0,
+      active: 1,
       datas: [],
       datas_list01: [],
       datas_list02: [],
@@ -122,221 +122,231 @@ export default {
       t01: null,
       t02: null,
       timer02: null,
-      order: this.$store.state.order,
-      sort: this.$store.state.sort,
+      order: this.$store.state.sort.order,
+      sort: this.$store.state.sort.sort,
       ws: null,
       ws01: null,
       ws02: null,
       // 记录websocket是否获得第一次数据
-      socketState: false
-    };
+      socketState: false,
+      // 公告消息
+      info01: '',
+      info02: ''
+    }
   },
 
   created() {
-    var datas = this.$store.state.home_datas.length;
+    this.getNews()
+    var datas = this.$store.state.home_datas.length
     if (datas) {
-      this.datas = this.$store.state.home_datas;
-      this.datas_list01 = this.$store.state.usdt_datas;
-      this.datas_list02 = this.$store.state.btc_datas;
+      this.datas = this.$store.state.home_datas
+      this.datas_list01 = this.$store.state.usdt_datas
+      this.datas_list02 = this.$store.state.btc_datas
     } else {
-      this.init();
+      this.init()
+      this.changeTabs()
     }
   },
   computed: {
     // 判断数据是否获取
     show: {
       get: function() {
-        if (this.datas != "") {
-          return true;
+        if (this.datas != '') {
+          return true
         }
-        return false;
+        return false
       },
       set: val => {
-        return val;
+        return val
       }
     },
     show01: {
       get: function() {
-        if (this.datas_list01 != "") {
-          return true;
+        if (this.datas_list01 != '') {
+          return true
         }
-        return false;
+        return false
       },
       set: val => {
-        return val;
+        return val
       }
     },
     show02: {
       get: function() {
-        if (this.datas_list02 != "") {
-          return true;
+        if (this.datas_list02 != '') {
+          return true
         }
-        return false;
+        return false
       },
       set: val => {
-        return val;
+        return val
       }
     }
   },
   watch: {
     // 判断升序降序
-    "$store.state.order": function() {
-      this.order = this.$store.state.order;
+    '$store.state.sort': function() {
+      this.order = this.$store.state.sort.order
+      this.sort = this.$store.state.sort.sort
       if (this.ws01 != null) {
-        this.ws01.close();
+        this.ws01.close()
+        this.changeTabs()
       }
       if (this.ws02 != null) {
-        this.ws02.close();
+        this.ws02.close()
+        this.changeTabs()
       }
-      if (this.t01 != null) {
-        clearTimeout(this.t01);
-      }
-      if (this.t02 != null) {
-        clearTimeout(this.t02);
-      }
-      this.changeTabs();
-    },
-    "$store.state.sort": function() {
-      this.sort = this.$store.state.sort;
-      if (this.ws01 != null) {
-        this.ws01.close();
-      }
-      if (this.ws02 != null) {
-        this.ws02.close();
-      }
-      this.changeTabs();
     }
   },
   methods: {
     // 初始化websocket
     init() {
-      var that = this;
-      if ("WebSocket" in window) {
-        var ws = new WebSocket("WSS://exchange.gd-juzheng.com:2345");
-        this.ws = ws;
+      var that = this
+      if ('WebSocket' in window) {
+        var ws = new WebSocket('WSS://exchange.gd-juzheng.com:2345')
+        this.ws = ws
       }
       var param = {
-        type: "index",
-        symbol: "USDT",
-        order: "weigh",
-        sort: "desc",
-        market: "",
-        think_var: "en"
-      };
+        type: 'index',
+        symbol: 'USDT',
+        order: 'weigh',
+        sort: 'desc',
+        market: '',
+        think_var: 'en'
+      }
 
       ws.onopen = function() {
         if (that.ws.readyState == 1) {
-          ws.send(JSON.stringify(param));
+          ws.send(JSON.stringify(param))
         }
-      };
+      }
       ws.onmessage = function(e) {
         setTimeout(() => {
-          ws.send(JSON.stringify(param));
-        }, 1000);
-        var res = JSON.parse(e.data);
-        that.datas = res;
-        that.$store.commit("getSocket", { datas: res, type: "home" });
-      };
+          ws.send(JSON.stringify(param))
+        }, 1000)
+        var res = JSON.parse(e.data)
+        that.datas = res
+        that.$store.commit('getSocket', { datas: res, type: 'home' })
+      }
     },
+
     // tabs页切换
     handleTab(e) {
-      this.active = e.currentTarget.id;
-      this.changeTabs();
+      this.active = e.currentTarget.id
+      this.changeTabs()
     },
+
     // 跳转到相应的页面
     handleNavTo(market, symbol) {
-      var str = market + "/" + symbol;
-      this.$store.commit("addMarket", str);
-      this.$router.push({ path: "/DASH_BTC/jy" });
+      var str = market + '/' + symbol
+      this.$store.commit('addMarket', str)
+      this.$router.push({ path: '/DASH_BTC/jy' })
     },
 
     // 改变tabs建立websocket
     changeTabs() {
-      var usdt_datas = this.$store.state.usdt_datas.length;
-      var btc_datas = this.$store.state.btc_datas.length;
-      clearTimeout(this.timer01);
-      clearTimeout(this.timer02);
-      var that = this;
-      let order = that.order;
-      let sort = that.sort;
-      if (this.active == "1") {
-        if (usdt_datas) {
-          this.datas_list01 = this.$store.state.usdt_datas;
-        } else {
-          var timer01 = setTimeout(() => {
-            this.ws01 = new WebSocket("WSS://exchange.gd-juzheng.com:2345");
-            let param = {
-              type: "index",
-              symbol: "USDT",
-              order,
-              sort,
-              market: "",
-              think_var: "en"
-            };
-            that.show01 = true;
-            // 发送的消息
-            let sendMessage = function(socket, param) {
-              if (that.ws01.readyState === 1) {
-                socket.send(JSON.stringify(param));
-              }
-            };
+      clearTimeout(this.timer01)
+      clearTimeout(this.timer02)
+      var that = this
+      if (this.active == '1') {
+        var timer01 = setTimeout(() => {
+          this.ws01 = new WebSocket('WSS://exchange.gd-juzheng.com:2345')
+          let param = {
+            type: 'index',
+            symbol: 'USDT',
+            order: that.$store.state.sort.order,
+            sort: that.$store.state.sort.sort,
+            market: '',
+            think_var: 'en'
+          }
+          that.show01 = true
+          // 发送的消息
+          let sendMessage = function(socket, param) {
+            if (that.ws01.readyState === 1) {
+              socket.send(JSON.stringify(param))
+            }
+          }
 
-            that.ws01.onopen = function() {
-              sendMessage(that.ws01, param);
-            };
-            that.ws01.onmessage = function(e) {
-              that.t01 = setTimeout(() => {
-                sendMessage(that.ws01, param);
-              }, 1000);
-              var res = JSON.parse(e.data);
-              that.datas_list01 = res;
-              that.$store.commit("getSocket", { datas: res, type: "usdt" });
-            };
-          }, 500);
-          that.timer01 = timer01;
-        }
+          that.ws01.onopen = function() {
+            sendMessage(that.ws01, param)
+          }
+          that.ws01.onmessage = function(e) {
+            that.t01 = setTimeout(() => {
+              sendMessage(that.ws01, param)
+            }, 1000)
+            var res = JSON.parse(e.data)
+            that.datas_list01 = res
+            that.$store.commit('getSocket', { datas: res, type: 'usdt' })
+          }
+          that.ws01.onclose = function(e) {
+            that.ws01.onopen()
+          }
+        }, 500)
+        that.timer01 = timer01
       }
-      if (this.active == "2") {
-        if (btc_datas) {
-          this.datas_list02 = this.$store.state.btc_datas;
-        } else {
-          var timer02 = setTimeout(() => {
-            that.show02 = true;
-            this.ws02 = new WebSocket("WSS://exchange.gd-juzheng.com:2345");
-            let param = {
-              type: "index",
-              symbol: "BTC",
-              order,
-              sort,
-              market: "",
-              think_var: "en"
-            };
-            // 发送的消息
-            let sendMessage = function(socket, param) {
-              if (that.ws02.readyState === 1) {
-                socket.send(JSON.stringify(param));
-              }
-            };
-            that.ws02.onopen = function() {
-              sendMessage(that.ws02, param);
-            };
-            that.ws02.onmessage = function(e) {
-              that.t02 = setTimeout(() => {
-                sendMessage(that.ws02, param);
-              }, 1000);
-              var res = JSON.parse(e.data);
-              that.datas_list02 = res;
-              that.$store.commit("getSocket", { datas: res, type: "btc" });
-            };
-          }, 500);
-        }
-        that.timer02 = timer02;
+
+      if (this.active == '2') {
+        var timer02 = setTimeout(() => {
+          that.show02 = true
+          this.ws02 = new WebSocket('WSS://exchange.gd-juzheng.com:2345')
+          let param = {
+            type: 'index',
+            symbol: 'BTC',
+            order: that.order,
+            sort: that.sort,
+            market: '',
+            think_var: 'en'
+          }
+          // 发送的消息
+          let sendMessage = function(socket, param) {
+            if (that.ws02.readyState === 1) {
+              socket.send(JSON.stringify(param))
+            }
+          }
+          that.ws02.onopen = function() {
+            sendMessage(that.ws02, param)
+          }
+          that.ws02.onmessage = function(e) {
+            that.t02 = setTimeout(() => {
+              sendMessage(that.ws02, param)
+            }, 1000)
+            var res = JSON.parse(e.data)
+            that.datas_list02 = res
+            that.$store.commit('getSocket', { datas: res, type: 'btc' })
+          }
+        }, 500)
+      }
+      that.timer02 = timer02
+    },
+
+    // 获取公告
+    async getNews() {
+      const { data: res } = await this.axios.get('/index/news', { params: { id: 1 } })
+      let lang = sessionStorage.getItem('locale')
+      if (lang == 'zh') {
+        this.info01 = res.data.list.data.slice(0, 2)[0].zh_name
+        this.info02 = res.data.list.data.slice(0, 2)[1].zh_name
+      }
+      if (lang == 'en') {
+        this.info01 = res.data.list.data.slice(0, 2)[0].en_name
+        this.info02 = res.data.list.data.slice(0, 2)[1].en_name
+      }
+      if (lang == 'ko') {
+        this.info01 = res.data.list.data.slice(0, 2)[0].ko_name
+        this.info02 = res.data.list.data.slice(0, 2)[1].ko_name
+      }
+      if (lang == 'jp') {
+        this.info01 = res.data.list.data.slice(0, 2)[0].jp_name
+        this.info02 = res.data.list.data.slice(0, 2)[1].jp_name
       }
     }
   }
-};
+}
 </script>
 <style lang="less" scoped>
+.home {
+  font-size: 26px;
+}
 .flex {
   display: flex;
 }

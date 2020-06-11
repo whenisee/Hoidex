@@ -102,7 +102,7 @@ module.exports = {
         issue: '发行价',
         currency: '申购币种',
         starttime: '开始申购时间',
-        launchtime: '预计上下时间',
+        launchtime: '预计上线时间',
         endtime: '结束申购时间',
         apply: '立即申购',
         cycle: '申购周期',

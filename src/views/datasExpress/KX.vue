@@ -1,16 +1,16 @@
 <template>
   <div class="kx">
     <!-- 价格图表 -->
-    <div class="changeChart flex" :style="[{'background':$store.state.mode?'#f7efef':'#2e2e2e'}]">
+    <div class="changeChart flex" :style="[{'background':$store.state.mode?'#ededed':'#2e2e2e'}]">
       <div :style="{'color':!$store.state.mode?'#fff':'#1d2635'}">{{$t('dash.priceChart')}}</div>
-      <div>
+      <!-- <div>
         <i
           v-for="(item, index) of pic_choose"
           :key="index"
           :class="['iconfont', item, current_pic==index?'isChoosed' : '']"
           @click="choosePic(index)"
         ></i>
-      </div>
+      </div> -->
     </div>
     <!-- 内容 -->
     <div class="content" v-show="show">
@@ -24,17 +24,27 @@
         >{{item.time}}</li>
       </ul>
       <!-- more -->
-      <div class="more" v-if="more_show" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
-        <span v-for="item of more" :key="item.id" @click="chooseMore(item.time)" :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{item.time}}</span>
+      <div
+        class="more"
+        v-if="more_show"
+        :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]"
+      >
+        <span
+          v-for="item of more"
+          :key="item.id"
+          @click="chooseMore(item.time)"
+          :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]"
+        >{{item.time}}</span>
       </div>
       <!-- 图表区 -->
       <div class="chart">
         <div id="tv_chart_container"></div>
       </div>
     </div>
-    <div v-show="!show">
-      <div id="echart" ref="myechart" style="height: 430px;width:10rem" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]"></div>
+    <div v-show="!show" class="echart_content">
+      <div id="echart" ref="myechart" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]"></div>
     </div>
+    <div class="block"></div>
   </div>
 </template>
 
@@ -55,7 +65,8 @@ export default {
       ],
       active: 1,
       current_pic: 0,
-      pic_choose: ["icontubiaozoushitu", "icontubiaozhuxingtu"],
+      pic_choose: ["icontubiaozoushitu"],
+      // pic_choose: ["icontubiaozoushitu", "icontubiaozhuxingtu"],
       // 图表内容的切换
       show: true,
       jsApi: null,
@@ -73,7 +84,7 @@ export default {
   },
   mounted() {
     this.initEcharts();
-    this.initKline()
+    this.initKline();
     // 点击其他位置关闭下拉时间菜单
     let that = this;
     document.addEventListener("click", function(e) {
@@ -85,14 +96,14 @@ export default {
   methods: {
     // 初始K线
     initKline() {
-      this.market = this.$store.state.market.toLowerCase();
-      this.symbol = this.$store.state.symbol;
-      let str = this.market + this.symbol
+      this.market = this.$store.state.market.toUpperCase();
+      this.symbol = this.$store.state.symbol.toUpperCase();
+      let str = this.market + "/" + this.symbol;
       jsApi = new TVjsApi(str);
-      if(this.$store.state.mode == true) {
-        jsApi.changeSkin('white')
+      if (this.$store.state.mode == true) {
+        jsApi.changeSkin("white");
       } else {
-        jsApi.changeSkin('black')
+        jsApi.changeSkin("black");
       }
       jsApi.init(); //图表初始化
       this.jsApi = jsApi;
@@ -186,16 +197,31 @@ export default {
       // let history = this.$parent.HistoryTrade
       var option = {
         tooltip: {
-          trigger: "axis",
+          trigger: 'axis',
           axisPointer: {
-            type: "shadow",
+            type: "line",
             snap: true
+          }
+        },
+        legend: {
+          backgroundColor: '#333',
+          show: false
+        },
+        axisPointer: {
+          snap: true,
+          triggerOn: 'mousemove',
+          lineStyle: {
+            type: 'dashed',
+            width: 2
           }
         },
         xAxis: {
           splitLine: {
             show: false,
             interval: 0
+          },
+          axisTick: {
+            show: false
           },
           type: "value",
           scale: true,
@@ -206,7 +232,6 @@ export default {
           data: []
         },
         grid: {
-          // left: "12%",
           show: true,
           containLabel: true,
           borderColor: "rgb(144,144,125)"
@@ -219,8 +244,17 @@ export default {
             show: false
           },
           position: "right",
-          // boundaryGap: ["20%", "20%"],
-          min: 0
+          axisTick: {
+            show: false
+          },
+          min: 0,
+          axisLabel: {
+            formatter: function(val) {
+              if (val >= 1000) {
+                return val/1000 + 'K'
+              } return val
+            }
+          }
         },
         series: [
           {
@@ -308,14 +342,14 @@ export default {
     },
     "$store.state.market": function() {
       this.market = this.$store.state.market.toLowerCase();
-      this.initKline()
+      this.initKline();
     },
     "$store.state.symbol": function() {
       this.symbol = this.$store.state.symbol;
-      this.initKline()
+      this.initKline();
     },
     "$store.state.mode": function() {
-      this.initKline()
+      this.initKline();
     }
   }
 };
@@ -325,9 +359,22 @@ export default {
 .kx {
   width: 100%;
   box-sizing: border-box;
-  background: rgb(29, 38, 53);
+  overflow: scroll;
   #tv_chart_container {
     height: 100%;
+  }
+  .echart_content {
+    width: 100%;
+    height: 1000px;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  #echart {
+    position: absolute;
+    left: -50px;
+    width: 850px;
+    height: 1000px;
   }
   .flex {
     display: flex;
@@ -389,6 +436,10 @@ export default {
         flex: 1;
       }
     }
+  }
+  .block {
+    height: 300px;
+    background: rgba(1, 1, 1, 0);
   }
 }
 </style>

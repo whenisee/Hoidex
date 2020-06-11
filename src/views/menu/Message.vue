@@ -1,30 +1,13 @@
 <template>
   <div class="message">
-    <div class="flex head option">
-      <section class="check flex">
-        <van-checkbox v-model="checked" icon-size="16px" shape="square"></van-checkbox>
-        <span>{{$t('user.selectall')}}</span>
-      </section>
-      <section class="flex">
-        <div>{{$t('user.mark')}}</div>
-        <div>{{$t('user.delete')}}</div>
-      </section>
-    </div>
-    <div class="flex head">
-      <section class="check flex">
-        <van-checkbox v-model="checked" icon-size="16px" shape="square"></van-checkbox>
-        <div>
-          <span v-if="datas.mobile">{{$t('user.boundphone')}}</span>
-          <span v-if="datas.mobile">{{datas.mobile}}</span>
-          <span v-if="datas.email">{{$t('user.boundemail')}}</span>
-          <span v-if="datas.email">{{datas.email}}</span>
-          <span>{{datas.expiretime | handleFormat}}</span>
-        </div>
-      </section>
-      <section class="flex">
-        <div>{{$t('user.delete')}}</div>
-      </section>
-    </div>
+    <van-cell
+      v-for="item of titles"
+      :key="item.id"
+      is-link
+      :title="item.name"
+      @click="chooseList(item.id)"
+    />
+    <van-action-sheet v-model="show" :actions="actions" @select="onSelect" />
   </div>
 </template>
 
@@ -32,61 +15,150 @@
 export default {
   data() {
     return {
-      checked: false,
-      result: false,
-      datas: {}
-    };
+      show: false,
+      actions: [],
+      actions01: [],
+      actions02: [],
+      actions03: [],
+      titles: []
+    }
   },
-  mounted() {
-    // expiretime
-    this.datas = JSON.parse(localStorage.getItem('userinfo'))
+  created() {
+    this.fetch('/index/news', 1)
+    this.fetch('/index/news', 2)
+    this.fetch('/index/news', 3)
   },
-};
+  methods: {
+    // 获取菜单
+    async getList() {
+      const { data: res } = await this.axios.get('/index/news', { params: { id: 1 } })
+      let lang = sessionStorage.getItem('locale')
+      if (lang == 'zh') {
+        this.info01 = res.data.list.data.slice(0, 2)[0].zh_name
+        this.info02 = res.data.list.data.slice(0, 2)[1].zh_name
+      }
+      if (lang == 'en') {
+        this.info01 = res.data.list.data.slice(0, 2)[0].en_name
+        this.info02 = res.data.list.data.slice(0, 2)[1].en_name
+      }
+      if (lang == 'ko') {
+        this.info01 = res.data.list.data.slice(0, 2)[0].ko_name
+        this.info02 = res.data.list.data.slice(0, 2)[1].ko_name
+      }
+      if (lang == 'jp') {
+        this.info01 = res.data.list.data.slice(0, 2)[0].jp_name
+        this.info02 = res.data.list.data.slice(0, 2)[1].jp_name
+      }
+    },
+    // 选择子菜单
+    onSelect(item) {
+      this.show = false
+      this.$router.push({ path: '/article', query: {id: item.id} })
+    },
+    // 请求主菜单
+    async fetch(url, id) {
+      const { data: res } = await this.axios.get(url, {
+        params: {
+          id
+        }
+      })
+      let lang = sessionStorage.getItem('locale')
+      if (lang == 'zh') {
+        this.titles.push({ name: res.data.caInfo.zh_name, id })
+        if (id == 1) {
+          res.data.list.data.forEach(item => {
+            this.actions01.push({ name: item.zh_name, id: item.id })
+          })
+        }
+        if (id == 2) {
+          res.data.list.data.forEach(item => {
+            this.actions02.push({ name: item.zh_name, id: item.id })
+          })
+        }
+        if (id == 3) {
+          res.data.list.data.forEach(item => {
+            this.actions03.push({ name: item.zh_name, id: item.id })
+          })
+        }
+      }
+      if (lang == 'en') {
+        this.titles.push({ name: res.data.caInfo.en_name, id })
+        if (id == 1) {
+          res.data.list.data.forEach(item => {
+            this.actions01.push({ name: item.en_name, id: item.id })
+          })
+        }
+        if (id == 2) {
+          res.data.list.data.forEach(item => {
+            this.actions02.push({ name: item.en_name, id: item.id })
+          })
+        }
+        if (id == 3) {
+          res.data.list.data.forEach(item => {
+            this.actions03.push({ name: item.en_name, id: item.id })
+          })
+        }
+      }
+      if (lang == 'ko') {
+        this.titles.push({ name: res.data.caInfo.ko_name, id })
+        if (id == 1) {
+          res.data.list.data.forEach(item => {
+            this.actions01.push({ name: item.ko_name, id: item.id })
+          })
+        }
+        if (id == 2) {
+          res.data.list.data.forEach(item => {
+            this.actions02.push({ name: item.ko_name, id: item.id })
+          })
+        }
+        if (id == 3) {
+          res.data.list.data.forEach(item => {
+            this.actions03.push({ name: item.ko_name, id: item.id })
+          })
+        }
+      }
+      if (lang == 'jp') {
+        this.titles.push({ name: res.data.caInfo.jp_name, id })
+        if (id == 1) {
+          res.data.list.data.forEach(item => {
+            this.actions01.push({ name: item.jp_name, id: item.id })
+          })
+        }
+        if (id == 2) {
+          res.data.list.data.forEach(item => {
+            this.actions01.push({ name: item.jp_name, id: item.id })
+          })
+        }
+        if (id == 3) {
+          res.data.list.data.forEach(item => {
+            this.actions01.push({ name: item.jp_name, id: item.id })
+          })
+        }
+      }
+    },
+    // 选择主菜单
+    chooseList(id) {
+      this.show = true
+      if(id==1) {
+        this.actions = this.actions01
+      }
+      if(id==2) {
+        this.actions = this.actions02
+      }
+      if(id==3) {
+        this.actions = this.actions03
+      }
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
 .message {
-  padding: 30px;
-  box-sizing: border-box;
-  .flex {
-    display: flex;
-  }
-  .option {
-    section {
-      padding: 10px 0 !important;
-    }
-  }
-  .head {
-    box-sizing: border-box;
-    border-bottom: 1px solid rgb(32, 47, 71);
-    section {
-      box-sizing: border-box;
-      padding: 40px 0;
-      &:nth-child(1) {
-        flex: 1.4;
-      }
-      &:nth-child(1) {
-        flex: 1;
-      }
-
-      color: rgb(130, 142, 161);
-      span {
-        font-size: 28px;
-        display: flex;
-        align-items: center;
-        margin-left: -20px;
-        color: rgb(130, 142, 161);
-        &:nth-child(2) {
-          padding: 20px 0;
-        }
-      }
-      div {
-        color: rgb(36, 160, 245);
-        &:nth-child(1) {
-          margin-right: 40px;
-        }
-      }
-    }
+  min-height: 100%;
+  background: #ededed;
+  .van-cell {
+    margin-bottom: 8px;
   }
 }
 </style>

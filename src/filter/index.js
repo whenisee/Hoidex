@@ -26,7 +26,7 @@ Vue.filter('reg', (val, index, len) => {
 
 // 时间戳
 Vue.filter('handleFormat', (val) => {
-    Date.prototype.toLocaleString = function() {
+    Date.prototype.toLocaleString = function () {
         var y = this.getFullYear()
         var m = (this.getMonth() + 1) > 9 ? (this.getMonth() + 1) : ('0' + (this.getMonth() + 1))
         var d = this.getDate()
@@ -42,26 +42,26 @@ Vue.filter('handleFormat', (val) => {
 
 // 转换成人民币
 Vue.filter('handleMoney', (val) => {
-    return Number(val*7).toFixed(4)
+    return val
 })
 
 // 小写字母转换成大写字母
 Vue.filter('handleTrans', (val) => {
-    if(val) {
+    if (val) {
         return val.toUpperCase()
     }
 })
 // 数值加上正负
 Vue.filter('handleNumAll', (val) => {
-    if(val) {
-        if(val>0) {
+    if (val) {
+        if (val > 0) {
             return '+' + val
         }
         return val
     }
 })
 Vue.filter('handleDecimal', (val, num) => {
-    if(val) {
+    if (val) {
         return Number(val).toFixed(num)
     }
 })

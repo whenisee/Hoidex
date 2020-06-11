@@ -25,13 +25,13 @@ export default {
   border: 1px solid #333;
   box-sizing: border-box;
   width: 85%;
+  overflow: hidden;
   padding: 10px 20px;
   color: #aaa;
   i {
     font-size: 26px;
   }
   input {
-    margin-left: 20px;
     width: 90%;
     outline: none;
     border: none;

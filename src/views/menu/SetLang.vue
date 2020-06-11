@@ -43,6 +43,7 @@ export default {
 <style lang="less" scoped>
 .language {
   padding: 30px;
+  font-size: 26px;
   .content {
     .item {
       display: flex;

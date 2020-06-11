@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
     <!-- 头部信息分类 -->
     <div class="head_class">
       <div>
@@ -27,14 +27,19 @@
 
     <!-- 信息内容 -->
     <div class="data_content">
-      <div class="item" v-for="item of datas" :key="item.id" @click="handleNavTo(item.market, item.symbol)">
+      <div
+        class="item"
+        v-for="item of datas"
+        :key="item.id"
+        @click="handleNavTo(item.market, item.symbol)"
+      >
         <div :style="[{'color':!$store.state.mode?'#fff':'#000'}]">
           <i class="iconfont icon-shoucang"></i>
           {{item.market}}/{{item.symbol | handleUpper}}
         </div>
         <div>
-          <p :style="[{'color':!$store.state.mode?'#fff':'#000'}]">{{item.open}}</p>
-          <p class="second_s">≈ ￥ {{item.open | handleMoney}}</p>
+          <p :style="[{'color':!$store.state.mode?'#fff':'#000'}]">{{item.close}}</p>
+          <p class="second_s">≈ $ {{item.close | handleMoney}}</p>
         </div>
         <div>
           <div :class="item.changepercent>0? 'green':'red'">{{item.changepercent | handleNum}}%</div>
@@ -46,7 +51,7 @@
 
 <script>
 export default {
-  props: ["datas"],
+  props: ['datas'],
   data() {
     return {
       show1_up: false,
@@ -55,70 +60,70 @@ export default {
       show2_down: false,
       show3_up: false,
       show3_down: false
-    };
+    }
   },
   methods: {
     handleNavTo(market, symbol) {
-      var str = market + "/" + symbol;
+      var str = market + '/' + symbol
       this.$store.commit('addMarket', str)
-      this.$router.push({path: '/DASH_BTC/jy'})
+      this.$router.push({ path: '/DASH_BTC/jy' })
     },
 
     // 条件排序--市场
     sort1() {
       var order = 'id'
-      this.show2_up = false;
-      this.show2_down = false;
-      this.show3_up = false;
-      this.show3_down = false;
+      this.show2_up = false
+      this.show2_down = false
+      this.show3_up = false
+      this.show3_down = false
       if (this.show1_up) {
-        this.show1_down = true;
-        this.show1_up = false;
-        this.$store.commit('handleParam', {order, sort: 'desc'})
+        this.show1_down = true
+        this.show1_up = false
+        this.$store.commit('handleParam', { order, sort: 'desc' })
       } else {
-        this.show1_down = false;
-        this.show1_up = true;
-        this.$store.commit('handleParam', {order, sort: 'asc'})
+        this.show1_down = false
+        this.show1_up = true
+        this.$store.commit('handleParam', { order, sort: 'asc' })
       }
     },
 
     // 条件排序--最新价
     sort2() {
       var order = 'close'
-      this.show1_up = false;
-      this.show1_down = false;
-      this.show3_up = false;
-      this.show3_down = false;
+      this.show1_up = false
+      this.show1_down = false
+      this.show3_up = false
+      this.show3_down = false
       if (this.show2_up) {
-        this.show2_down = true;
-        this.show2_up = false;
-        this.$store.commit('handleParam', {order, sort: 'desc'})
+        this.show2_down = true
+        this.show2_up = false
+        this.$store.commit('handleParam', { order, sort: 'desc' })
       } else {
-        this.show2_down = false;
-        this.show2_up = true;
-        this.$store.commit('handleParam', {order, sort: 'asc'})
+        this.show2_down = false
+        this.show2_up = true
+        this.$store.commit('handleParam', { order, sort: 'asc' })
       }
     },
 
     // 条件排序--涨跌幅
     sort3() {
       var order = 'changepercent'
-      this.show1_up = false;
-      this.show1_down = false;
-      this.show2_up = false;
-      this.show2_down = false;
+      this.show1_up = false
+      this.show1_down = false
+      this.show2_up = false
+      this.show2_down = false
       if (this.show3_up) {
-        this.show3_down = true;
-        this.show3_up = false;
-        this.$store.commit('handleParam', {order, sort: 'desc'})
+        this.show3_down = true
+        this.show3_up = false
+        this.$store.commit('handleParam', { order, sort: 'desc' })
       } else {
-        this.show3_down = false;
-        this.show3_up = true;
-        this.$store.commit('handleParam', {order, sort: 'asc'})
+        this.show3_down = false
+        this.show3_up = true
+        this.$store.commit('handleParam', { order, sort: 'asc' })
       }
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -132,7 +137,7 @@ export default {
       align-items: center;
     }
     .show {
-      color: red;
+      color: #c2d341;
     }
     .sort {
       display: flex;
@@ -177,12 +182,12 @@ export default {
         color: rgb(36, 160, 245);
       }
       .green {
-        color: green;
-        background: rgb(25, 59, 68);
+        color: #fff;
+        background: #03ad8f;
       }
       .red {
-        color: red;
-        background: rgb(57, 43, 62);
+        color: #fff;
+        background: #d14b64;
       }
       div {
         padding: 5px;

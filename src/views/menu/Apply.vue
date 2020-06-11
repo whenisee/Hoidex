@@ -328,13 +328,28 @@
       </div>
     </div>
     <div class="submit">
-      <div class="btn" :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$t('apply.submitnow')}}</div>
+      <div class="btn" :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]" @click="subInfo">{{$t('apply.submitnow')}}</div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      
+    }
+  },
+  methods: {
+    // 提交
+    subInfo() {
+      this.$notify({
+        message: '提交成功',
+        type: 'success'
+      })
+    }
+  },
+};
 </script>
 
 <style lang="less" scoped>

@@ -1,10 +1,10 @@
 <template>
   <div class="cj" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
-    <div class="title" :style="[{'background':$store.state.mode?'#f7efef':'#2e2e2e'},{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$t('dash.recentTrades')}}</div>
+    <div class="title" :style="[{'background':$store.state.mode?'#ededed':'#2e2e2e'},{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{$t('dash.recentTrades')}}</div>
     <section>
       <div class="attribute">
-        <p>{{$t('dash.price')}}(BTC)</p>
-        <p>{{$t('dash.volume')}}(DASH)</p>
+        <p>{{$t('dash.price')}}({{$parent.marketinfo.symbol | handleTrans}})</p>
+        <p>{{$t('dash.volume')}}({{$parent.marketinfo.market}})</p>
         <p>{{$t('dash.time')}}</p>
       </div>
       <div class="content">
@@ -37,7 +37,7 @@ export default {
 .cj {
   background: rgb(29, 38, 53);
   padding-bottom: 80px;
-  font-size: 27px;
+  font-size: 28px;
   .title {
     padding: 30px;
     box-sizing: border-box;
@@ -48,13 +48,20 @@ export default {
     padding: 20px;
     .attribute {
       display: flex;
+      justify-content: center;
       p {
         padding: 10px 0;
+        font-size: 26px;
         display: flex;
-        justify-content: flex-end;
+        justify-content: center;
         &:nth-child(1) {
           display: flex;
           justify-content: flex-start;
+        }
+        &:nth-last-child(1) {
+          display: flex;
+          justify-content: flex-end;
+          margin-right: 10px;
         }
       }
     }
@@ -63,6 +70,7 @@ export default {
       color: rgb(130, 142, 161);
     }
     .content {
+      font-size: 26px;
       padding: 20px 0;
       &::-webkit-scrollbar {
         display: none; //取消滚动轴
@@ -72,10 +80,15 @@ export default {
         p {
           padding: 10px 0;
           display: flex;
-          justify-content: flex-end;
+          justify-content: center;
           &:nth-child(1) {
             display: flex;
             justify-content: flex-start;
+            color: red;
+          }
+          &:nth-last-child(1) {
+            display: flex;
+            justify-content: flex-end;
             color: red;
           }
         }

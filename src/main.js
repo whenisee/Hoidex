@@ -19,15 +19,18 @@ Vue.use(vant.Uploader)
 Vue.use(vant.Loading)
 Vue.use(vant.Notify)
 Vue.use(vant.Switch)
-Vue.use(vant.Dialog )
+Vue.use(vant.Dialog)
+Vue.use(vant.ActionSheet)
 
+axios.defaults.baseURL = 'https://exchange.gd-juzheng.com/api'
 Vue.prototype.axios = axios
-axios.interceptors.request.use(config => {
-  return config
-},
-error => {
-  return Promise.error(error)
-})
+
+// axios.interceptors.request.use(config => {
+//   return config
+// },
+// error => {
+//   return Promise.error(error)
+// })
 
 // 不支持CDN？？
 import VueClipboard from 'vue-clipboard2'

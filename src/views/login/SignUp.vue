@@ -2,7 +2,7 @@
   <div class="signUp">
     <!-- 头部欢迎 -->
     <div class="welcome">
-      <p>{{$t('signup.welcome[0]')}}</p>
+      <p style="color: #fff">{{$t('signup.welcome[0]')}}</p>
       <div>
         {{$t('signup.welcome[1]')}}
         <p @click="handleNavTo()">{{$t('signup.welcome[2]')}}</p>
@@ -36,7 +36,7 @@
               />
               <!-- 选择菜单 -->
               <transition name="fade">
-                <section v-if="isActive && lang=='zh'"  :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
+                <section v-if="isActive && lang=='zh'" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]">
                   <p
                     v-for="(item, index) of areaDatas"
                     :key="index"
@@ -44,25 +44,28 @@
                     :style="[{'background':$store.state.mode?'#fff':'#1d2635'}, {'color':!$store.state.mode?'#fff':'#1d2635'}]"
                   >{{item.country.zh_name}}{{item.code}}</p>
                 </section>
-                <section v-if="isActive && lang=='en'"  :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
+                <section v-if="isActive && lang=='en'" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]">
                   <p
                     v-for="(item, index) of areaDatas"
                     :key="index"
                     @click="handleChoose(item.country.en_name, item.code)"
+                    :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]"
                   >{{item.country.en_name}}{{item.code}}</p>
                 </section>
-                <section v-if="isActive && lang=='jp'"  :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
+                <section v-if="isActive && lang=='jp'" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]">
                   <p
                     v-for="(item, index) of areaDatas"
                     :key="index"
                     @click="handleChoose(item.country.jp_name, item.code)"
+                    :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]"
                   >{{item.country.jp_name}}{{item.code}}</p>
                 </section>
-                <section v-if="isActive && lang=='ko'"  :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
+                <section v-if="isActive && lang=='ko'" :style="[{'background':$store.state.mode?'#fff':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]">
                   <p
                     v-for="(item, index) of areaDatas"
                     :key="index"
                     @click="handleChoose(item.country.ko_name, item.code)"
+                    :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]"
                   >{{item.country.ko_name}}{{item.code}}</p>
                 </section>
               </transition>
@@ -194,7 +197,7 @@ export default {
     if (countryDatas) {
       this.areaDatas = countryDatas;
     } else {
-      const { data: res } = await this.axios.get("https://hoidex.com/api/user/smsCountry");
+      const { data: res } = await this.axios.get("/index/country");
       localStorage.setItem('countryDatas', JSON.stringify(res.data))
       this.areaDatas = res.data;
     }

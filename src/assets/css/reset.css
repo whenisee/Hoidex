@@ -83,8 +83,10 @@ video {
 	padding: 0;
 	border: 0;
 	font-size: 100%;
+	font-size: 28px;
 	font: inherit;
 	vertical-align: baseline;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 /* HTML5 display-role reset for older browsers */
@@ -100,6 +102,7 @@ menu,
 nav,
 section {
 	display: block;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
@@ -134,16 +137,14 @@ table {
 	border-spacing: 0;
 }
 
-div {
-	color: #fff;
-}
-
 .van-dialog div {
 	color: #000;
 }
+
 .van-tabs__nav {
-    background-color: initial !important;
-  }
-  .van-tab--active {
-	  color: rgb(34, 141, 215)
-  }
+	background-color: initial !important;
+}
+
+.van-tab--active {
+	color: rgb(34, 141, 215)
+}

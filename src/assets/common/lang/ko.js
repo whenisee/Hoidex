@@ -102,7 +102,7 @@ module.exports = {
         issue: '발행 가격',
         currency: '요청서 통화',
         starttime: '요청서 시작 시간',
-        launchtime: '예상 상하 시간',
+        launchtime: '예상 온라인 시간',
         endtime: '요청서 종료 시간',
         apply: '지금 요청드립니다',
         cycle: '청약 주기',

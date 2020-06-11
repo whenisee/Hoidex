@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!-- 顶部导航栏 -->
-    <div id="nav" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
+    <div id="nav" :style="[{'background':$store.state.mode?'#ededed':'#1d2635'}]">
       <div @click="closePop()">
         <router-link to="/">
           <img :src="$store.state.mode?require('./assets/home02.png'):require('./assets/home01.png')" alt />
@@ -335,8 +335,8 @@ export default {
     init() {
       var that = this;
       if ("WebSocket" in window) {
-        var ws = new WebSocket("WSS://exchange.gd-juzheng.com:2345");
-        this.ws = ws;
+        this.ws = new WebSocket("WSS://exchange.gd-juzheng.com:2345");
+        var ws = this.ws
       }
       var param = {
         type: "index",
@@ -410,7 +410,6 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import url('../src/assets/css/mode.less');
 .expand {
   position: fixed;
   top: 90px;
@@ -453,6 +452,9 @@ export default {
   }
   div {
     flex: 1;
+    &:nth-child(2) {
+      flex: .5
+    }
     display: flex;
     align-items: center;
     div {
@@ -468,7 +470,7 @@ export default {
     }
   }
   .declaration {
-    flex: 1.2;
+    flex: 1.2 !important;
     margin-left: 10px;
     display: flex;
     justify-content: center;

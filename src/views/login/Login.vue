@@ -2,7 +2,7 @@
   <div class="login" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
     <!-- 头部欢迎 -->
     <div class="welcome">
-      <p>{{$t('login.welcome[0]')}}</p>
+      <p :style="[{'color':$store.state.mode?'#fff':'#fff'}]">{{$t('login.welcome[0]')}}</p>
       <div>
         {{$t('login.welcome[1]')}}
         <p @click="handleNavTo()">{{$t('login.welcome[2]')}}</p>
@@ -51,7 +51,7 @@ export default {
 
     // 登录
     async login() {
-      const { data: res } = await this.$http.post('https://hoidex.com/api/user/login', {
+      const { data: res } = await this.$http.post('https://exchange.gd-juzheng.com/api/user/login', {
         account: this.account,
         password: this.password
       })
@@ -62,9 +62,9 @@ export default {
         var userinfo = JSON.stringify(res.data.userinfo)
         // 这里缓存的token是测试值
         // localStorage.setItem('token', res.data.userinfo.token)
-        localStorage.setItem('token', '07b09a5f-15e5-4bf3-8fe8-d414102edf28')
+        localStorage.setItem('token', res.data.userinfo.token)
         localStorage.setItem('userinfo', userinfo)
-        localStorage.setItem('password', this.password)
+        // localStorage.setItem('password', this.password)
         this.$router.back()
       } else {
         this.$notify({ type: 'danger', message: '登录失败！', duration: 800 })
@@ -136,6 +136,7 @@ export default {
     }
   }
   .forget {
+    display: inline-block;
     color: #1baaec;
     margin: 50px 20px;
   }

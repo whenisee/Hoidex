@@ -79,7 +79,6 @@ const routes = [{
     name: 'Address',
     component: () => import( /* webpackChunkName: "Address" */ '../views/wallet/Address.vue'),
   },
-  
   {
     path: '/signUp',
     name: 'SignUp',
@@ -117,6 +116,9 @@ const routes = [{
   },
   {
     path: '/new',
+    meta: {
+      requireAuth: true
+    },
     component: () => import( /* webpackChunkName: "Aboutus" */ '../views/menu/New.vue')
   },
   {
@@ -129,6 +131,10 @@ const routes = [{
       requireAuth: true
     },
     component: () => import( /* webpackChunkName: "user" */ '../views/user/index.vue')
+  },
+  {
+    path: '/article',
+    component: () => import( /* webpackChunkName: "article" */ '../views/article/Index.vue')
   }
 ]
 
@@ -139,7 +145,7 @@ VueRouter.prototype.push = function push(location) {
 };
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes
 })
@@ -149,9 +155,13 @@ router.beforeEach((to, from, next) => {
     if (!localStorage.getItem("token")) {
       let info = ''
       let type = sessionStorage.getItem('locale')
-      switch(type) {
-        case 'zh': info = '请先登录!'; break;
-        case 'en': info = 'Please log in first!'; break;
+      switch (type) {
+        case 'zh':
+          info = '请先登录!';
+          break;
+        case 'en':
+          info = 'Please log in first!';
+          break;
       }
       Vue.prototype.$notify({
         message: info,

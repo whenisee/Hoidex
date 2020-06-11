@@ -5,7 +5,7 @@
       <div class="datas">
         <div class="item" v-for="item of datas" :key="item.id" @click="navToJY(item.market, item.symbol)">
           <i class="iconfont icon-shoucang"></i>
-          <span>{{item.market}}</span>
+          <span :style="[{'color':!$store.state.mode?'#fff':'#1d2635'}]">{{item.market}}</span>
         </div>
       </div>
     </div>
@@ -20,7 +20,6 @@ export default {
       var str = market + '/' + symbol
       this.$store.commit('addMarket', str)
       this.$emit('close')
-      // this.$router.push({path: '/DASH_BTC/jy', query: { name: market }})
     }
   }
 };

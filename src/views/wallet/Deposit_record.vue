@@ -10,7 +10,7 @@
     <!-- 内容区 -->
     <div class="content" :style="[{'background':$store.state.mode?'#fff':'#1d2635'}]">
       <!-- 币种头部 -->
-      <ul class="flex" :style="[{'background':$store.state.mode?'#f7efef':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]">
+      <ul class="flex" :style="[{'background':$store.state.mode?'#ededed':'#1d2635'},{'color':!$store.state.mode?'#fff':'#1d2635'}]">
         <li
           :class="['padding-large', index==current_opt?'bottom_line':'', 'box']"
           v-for="(item, index) of opt"

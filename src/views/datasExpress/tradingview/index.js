@@ -175,18 +175,8 @@ class TVjsApi {
         }
         //TODO: 如果增量更新数据的时间大于缓存时间，而且缓存有数据，数据长度大于0
         if (barsData.time > this.lastTime && this.cacheData[ticker] && this.cacheData[ticker].length) {
+          console.log('开始增量')
           //增量更新的数据直接加入缓存数组
-          // if(this.interval == '1D') {
-          //   if (barsData.time - 86400 > this.lastTime && this.cacheData[ticker] && this.cacheData[ticker].length) {
-          //     this.cacheData[ticker].push(barsData);
-          //     this.lastTime = barsData.time;
-          //   } else {
-          //     this.cacheData[ticker][this.cacheData[ticker].length - 1] = barsData;
-          //   }
-          // } else {
-          //   this.cacheData[ticker].push(barsData);
-          //   this.lastTime = barsData.time;
-          // }
           this.cacheData[ticker].push(barsData);
           // 修改缓存时间
           this.lastTime = barsData.time;

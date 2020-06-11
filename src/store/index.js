@@ -10,8 +10,10 @@ const store = new Vuex.Store({
         usdt_datas: [],
         btc_datas: [],
         // 首页tab栏缓存分类
-        order: 'id',
-        sort: 'desc',
+        sort: {
+            order: 'id',
+            sort: 'desc',
+        },
         market: 'BTC',
         symbol: 'usdt',
         market_symbol: 'BTC/USDT',
@@ -27,20 +29,19 @@ const store = new Vuex.Store({
         },
         // 首页获取的socket数据
         getSocket(state, res) {
-            if(res.type=='home') {
+            if (res.type == 'home') {
                 state.home_datas = res.datas
             }
-            if(res.type=='usdt') {
+            if (res.type == 'usdt') {
                 state.usdt_datas = res.datas
             }
-            if(res.type=='btc') {
+            if (res.type == 'btc') {
                 state.btc_datas = res.datas
             }
         },
         // 传递websocket的param
         handleParam(state, obj) {
-            state.order = obj.order
-            state.sort = obj.sort
+            state.sort = obj
         },
         tradingView(state, obj) {
             state.TradingView = obj
@@ -50,7 +51,7 @@ const store = new Vuex.Store({
             var arr = val.split('/')
             state.market = arr[0]
             state.symbol = arr[1]
-            state.market_symbol = arr[0]+ '/' + arr[1].toUpperCase()
+            state.market_symbol = arr[0] + '/' + arr[1].toUpperCase()
         },
         // 改变语言的选择箭头
         changeLang(state, val) {
